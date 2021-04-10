@@ -1,4 +1,5 @@
 let projectsList = [];
+let currentProject = "None";
 
 let projectsMaker = (nameEntry, descriptionEntry) => 
 {
@@ -12,6 +13,11 @@ return {projectName, description, listOfTasks};
 function displayProjects ()
 {
     console.log(projectsList);
+}
+
+function displayCurrentProject ()
+{
+    console.log(currentProject); //shows currently toggled project list
 }
 
 function deleteProject (project) // need to add exception for list being empty
@@ -31,14 +37,34 @@ function deleteProject (project) // need to add exception for list being empty
 }
 
 
-function addProject (nameEntry, descriptionEntry) // may need to run a check to see if Name exists first
+function makeProject (nameEntry, descriptionEntry) // may need to run a check to see if Name exists first
 {
-    projectsList.push(projectsMaker(nameEntry, descriptionEntry));
+    projectsList.push(projectsMaker(nameEntry, descriptionEntry)); 
+    // toggle current project by default
+    // currentProject = projectsList.push(projectsMaker(nameEntry, descriptionEntry)); selection input
 }
 
-function addprojectItem (projectName, projectItem)
+function addProjectItem (projectItem) //store projectName globaly on project selection .. push project item to it
 {
-
+    currentProject.push(projectItem);
 }
 
-export {addProject, deleteProject, displayProjects};
+function toggleProject (inputSelection) // move to currently elected project may need global var to track
+{
+    for (let search = 0; search <= projectsList.length-1; search ++)
+    {
+        if (projectsList[search].projectName == inputSelection)
+        {
+            console.log(projectsList[search]);
+            currentProject = projectsList[search].listOfTasks;
+        }
+        else 
+        {
+            console.log('not found keep going');
+        }
+    }
+
+    // currentProject = inputSelection;
+}
+
+export {makeProject, addProjectItem, deleteProject, displayProjects, toggleProject, displayCurrentProject};
