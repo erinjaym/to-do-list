@@ -3,14 +3,16 @@ let dailyItemMaker = (nameEntry, detailEntry, priorityEntry) => {
     let detail = detailEntry;
     let completed = false;
     let priority = priorityEntry;
-
+    function sayName () {  // use for selection methods later ?? 
+        return this.dailyName;
+    }
     function info() { 
         console.log("Item Info: " + this.dailyName + " " + this.detail + " " + this.completed + " " + this.priority);
     }
-    return {dailyName, detail, completed, priority, info};
+    return {dailyName, detail, completed, priority, info, sayName};
 };
 
-function toggleComplete (dailyItem) // check or uncheck Item
+function toggleDailyComplete (dailyItem) // check or uncheck Item
 { 
     if (dailyItem.completed)
     {
@@ -26,7 +28,7 @@ function toggleComplete (dailyItem) // check or uncheck Item
     }
 }
 
-function togglePriority (dailyItem, priorityEntry) // need to make basecases for no entry and exceptions?  
+function toggleDailyPriority (dailyItem, priorityEntry) // need to make basecases for no entry and exceptions?  
 {
     console.log(dailyItem.priority);
     dailyItem.priority = priorityEntry;
@@ -34,14 +36,14 @@ function togglePriority (dailyItem, priorityEntry) // need to make basecases for
 }
 
 
-function changeDetail (dailyItem, newDetails) // need to make basecases for no entry and exceptions
+function changeDailyDetail (dailyItem, newDetails) // need to make basecases for no entry and exceptions
 {
     console.log(dailyItem.detail);
     dailyItem.detail = newDetails;
     return console.log("Changed Details to " + dailyItem.detail);
 }
 
-function changeName (dailyItem, newName) // need to make basecases for no entry and exceptions
+function changeDailyName (dailyItem, newName) // need to make basecases for no entry and exceptions
 {
      console.log(dailyItem.dailyName);
      dailyItem.dailyName = newName;
@@ -55,4 +57,4 @@ daily.info();
 return daily;
 }
 
-export {makeDailyItem, toggleComplete, togglePriority, changeDetail, changeName};
+export {makeDailyItem, toggleDailyComplete, toggleDailyPriority, changeDailyDetail, changeDailyName};
