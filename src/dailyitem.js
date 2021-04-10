@@ -1,39 +1,58 @@
-const dailyItemMaker = (nameEntry, detailEntry, priorityEntry) => {
-    this.name = nameEntry;
-    this.detail = detailEntry;
-    this.completed = false;
-    this.priority = priorityEntry;
-     // const this.info = (){ console.log("Item Info: " + this.name + this.detail + this.completed + this.priority)}
-}
+let dailyItemMaker = (nameEntry, detailEntry, priorityEntry) => {
+    let dailyName = nameEntry;
+    let detail = detailEntry;
+    let completed = false;
+    let priority = priorityEntry;
 
-function toggleComplete (dailyItem)
+    function info() { 
+        console.log("Item Info: " + this.dailyName + " " + this.detail + " " + this.completed + " " + this.priority);
+    }
+    return {dailyName, detail, completed, priority, info};
+};
+
+function toggleComplete (dailyItem) // check or uncheck Item
 { 
-    if (this.completed)
+    if (dailyItem.completed)
     {
-    console.log(this.completed);
-    return this.completed = false; 
+    console.log(dailyItem.completed);
+    dailyItem.completed = false; 
+    return console.log("changed it to falst")
     }
-    else 
+    else if (dailyItem.completed == false)
     {
-    console.log(this.completed);
-    return this.completed = true;  
+    console.log("Make true");
+    dailyItem.completed = true; 
+    return console.log("changed It to true"); 
     }
 }
 
-// priorities = low med high
-function togglePriority (dailyItem, priorityEntry)
+function togglePriority (dailyItem, priorityEntry) // need to make basecases for no entry and exceptions?  
 {
-    
+    console.log(dailyItem.priority);
+    dailyItem.priority = priorityEntry;
+    return console.log('Changed priority to ' + dailyItem.priority);
 }
 
-const changeDetail = (dailyItem, newDetails) =>
-{
 
+function changeDetail (dailyItem, newDetails) // need to make basecases for no entry and exceptions
+{
+    console.log(dailyItem.detail);
+    dailyItem.detail = newDetails;
+    return console.log("Changed Details to " + dailyItem.detail);
 }
 
-function changeName (dailtyItem, newName)
+function changeName (dailyItem, newName) // need to make basecases for no entry and exceptions
 {
-
+     console.log(dailyItem.dailyName);
+     dailyItem.dailyName = newName;
+    return console.log("Changed Name to " + dailyItem.dailyName);
 } 
 
-export {dailyItemMaker}
+function makeDailyItem (name, detail, priority) 
+{
+let daily = dailyItemMaker(name, detail, priority);
+daily.info();
+return daily;
+}
+
+export {makeDailyItem, toggleComplete, togglePriority, changeDetail, changeName};
