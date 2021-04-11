@@ -1,11 +1,59 @@
-.things
+.task-container {
+    background:hsl(0, 50%, 96%);
+    display: flex; 
+    flex-direction: column;
+    height: auto;
+    left: 253px;
+    padding: 10px 50px 0px; 
+    position: absolute; 
+    top: 0;
+    width: auto;
+  }
+
+  .main-section 
+  {
+    display: flex; 
+    flex-direction: column;
+    height: auto;
+    width: auto;
+   }
+   
+  .nav-container 
+  {
+    align-items: center;
+    background: hsl(0, 50%, 85%);
+    border-color:rgba(240, 0, 0, 0.4);
+    border-right:solid;
+    border-color:rgba(240, 0, 0, 0.4);
+    display: flex; 
+    flex-direction: column;
+    height:100%;
+    left:0px;
+    position:fixed;
+    top:0px;
+    width:250px;
+  }
+  
+ 
+  .nav-link-container 
 {
-
-
+    align-items: center; 
+    border-bottom:solid;
+    border-color:rgba(240, 0, 0, 0.4); 
+    display: flex; 
+    flex-direction: column;
+    width: 100%;
 }
 
-.stuff
+.nav-header
 {
+    border-bottom:solid;
+    border-color:rgba(240, 0, 0, 0.4);
+    font-size: 1.5em;
+}
 
-    
+.nav-spacer
+{
+    height: 40px;
+    width: 10px;
 }
