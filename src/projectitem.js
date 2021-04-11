@@ -1,4 +1,4 @@
-let projectItemMaker = (nameEntry, detailEntry, dueDateEntry, priorityEntry) => {
+let projectItemMaker = (nameEntry, detailEntry, priorityEntry, dueDateEntry) => {
     let projectItemName = nameEntry;
     let detail = detailEntry;
     let completed = false;
@@ -10,6 +10,8 @@ let projectItemMaker = (nameEntry, detailEntry, dueDateEntry, priorityEntry) => 
     }
     return {projectItemName, detail, completed, priority, info, dueDate};
 };
+
+
 
 function toggleComplete (projectItem) // check or uncheck Item
 { 
@@ -26,6 +28,8 @@ function toggleComplete (projectItem) // check or uncheck Item
     return console.log("changed It to true"); 
     }
 }
+
+
 
 function togglePriority (projectItem, priorityEntry) // need to make basecases for no entry and exceptions?  
 {
@@ -50,10 +54,17 @@ function changeName (projectItem, newName) // need to make basecases for no entr
 } 
 
 function makeProjectItem (name, detail, priority) 
+    {
+    let item = projectItemMaker(name, detail, priority);
+    item.info();
+    return item;
+}
+
+
+// for date select. Also need to modify project Item once this has been finished. 
+function selectDueDate (userInput)
 {
-let item = projectItemMaker(name, detail, priority);
-item.info();
-return item;
+   let dueDate = userInput; 
 }
 
 export {makeProjectItem, toggleComplete, togglePriority, changeDetail, changeName};

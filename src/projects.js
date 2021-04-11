@@ -1,5 +1,6 @@
 let projectsList = [];
-let currentProject = "None";
+let currentProject = "None"; // shows list of current project
+let currentProjectList = "None";
 
 let projectsMaker = (nameEntry, descriptionEntry) => 
 {
@@ -9,44 +10,52 @@ let listOfTasks = [];
 return {projectName, description, listOfTasks};
 };
 
-
 function displayProjects ()
 {
-    console.log(projectsList);
+    return console.log(projectsList); //shows list of projects
+}
+
+function displayCurrentProjectList()
+{
+    return console.log(currentProjectList); //shows currently toggled project list
 }
 
 function displayCurrentProject ()
 {
-    console.log(currentProject); //shows currently toggled project list
+    return console.log(currentProject); //shows currently toggled project
 }
 
-function deleteProject (project) // need to add exception for list being empty
+function getCurrentProjectName()
 {
-    for (let findName = 0; findName <= projectsList.length-1; findName ++)
+    return console.log(currentProject.projectName); // returns current project name
+}
+
+function deleteProject (userInput) 
+{
+    for (let find = 0; find <= projectsList.length-1; find ++)
     {
-        if (projectsList[findName].projectName == project.projectName)
+        if (projectsList[find].projectName == userInput)
         {
-            projectsList.splice(findName, 1);
+            projectsList.splice(find, 1);
+            return true;
         }
         else
         {
             console.log('no match');
         }
     }
-    return console.log('did what could be done');
+    return false;
 }
 
 
 function makeProject (nameEntry, descriptionEntry) // may need to run a check to see if Name exists first
 {
     projectsList.push(projectsMaker(nameEntry, descriptionEntry)); 
-    // toggle current project by default
-    // currentProject = projectsList.push(projectsMaker(nameEntry, descriptionEntry)); selection input
 }
 
-function addProjectItem (projectItem) //store projectName globaly on project selection .. push project item to it
+function addProjectItem (projectItem) 
 {
-    currentProject.push(projectItem);
+    currentProjectList.push(projectItem);
 }
 
 function toggleProject (inputSelection) // move to currently elected project may need global var to track
@@ -55,16 +64,33 @@ function toggleProject (inputSelection) // move to currently elected project may
     {
         if (projectsList[search].projectName == inputSelection)
         {
-            console.log(projectsList[search]);
-            currentProject = projectsList[search].listOfTasks;
+            currentProject = projectsList[search];
+            currentProjectList = projectsList[search].listOfTasks;
+            return true;
         }
         else 
         {
-            console.log('not found keep going');
+           // console.log('not found keep going');
         }
     }
 
-    // currentProject = inputSelection;
 }
 
-export {makeProject, addProjectItem, deleteProject, displayProjects, toggleProject, displayCurrentProject};
+function deleteProjectItem (projectItem) // searches through current projects list to delete
+{
+    for (let findName = 0; findName <= currentProjectList.length-1; findName ++)
+    {
+        if (currentProjectList[findName].projectItemName == projectItem.projectItemName)
+        {
+            currentProjectList.splice(findName, 1);
+        }
+        else
+        {
+            console.log('no match');
+        }
+    }
+
+    return console.log('did what could be done');
+}
+
+export {getCurrentProjectName, makeProject, addProjectItem, deleteProject, displayProjects, toggleProject, displayCurrentProject, deleteProjectItem};

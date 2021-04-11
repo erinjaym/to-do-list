@@ -1,3 +1,4 @@
+
 let dailyItemMaker = (nameEntry, detailEntry, priorityEntry) => {
     let dailyName = nameEntry;
     let detail = detailEntry;
@@ -56,5 +57,6 @@ let daily = dailyItemMaker(name, detail, priority);
 daily.info();
 return daily;
 }
+
 
 export {makeDailyItem, toggleDailyComplete, toggleDailyPriority, changeDailyDetail, changeDailyName};
