@@ -2,7 +2,9 @@ let dailyProjectsList = [];
 
 function displayDailyProjects ()
 {
-    console.log(dailyProjectsList);
+    //had console log to display replaced with this for time being
+    let dailyTaskDisplay = dailyProjectsList;
+    return dailyTaskDisplay;
 }
 
 function deleteDaily (dailyItem) // need to add exception for list being empty

@@ -1,6 +1,6 @@
 let projectsList = [];
 let currentProject = "None"; // shows list of current project
-let currentProjectList = "None";
+let currentProjectTasks = "None"; // used for display currently selected project items
 
 let projectsMaker = (nameEntry, descriptionEntry) => 
 {
@@ -12,12 +12,36 @@ return {projectName, description, listOfTasks};
 
 function displayProjects ()
 {
-    return console.log(projectsList); //shows list of projects
+    let displayProjectsList = projectsList;
+    console.log(displayProjectsList);
+    return displayProjectsList; //shows list of projects for testing 
 }
 
-function displayCurrentProjectList()
+function getProjectNames ()
 {
-    return console.log(currentProjectList); //shows currently toggled project list
+    let namesList = [];
+    let theProjects = projectsList; 
+    if(projectsList.length == 0)
+    {}
+    else 
+    {
+         for (let currentName = 0; currentName <= projectsList.length-1; currentName++)
+       {
+           console.log('making names list');
+            let projectName = theProjects[currentName].projectName;
+            namesList.push(projectName);
+        }
+        return namesList;
+    }
+    return console.log("No projects Yet");
+}
+
+
+function getCurrentProjectList() // list of items in each proejct ?? ... same as whats underneath?? 
+{
+    let allProjects = currentProjectTasks;
+    console.log(allProjects);
+    return allProjects;
 }
 
 function displayCurrentProject ()
@@ -53,19 +77,24 @@ function makeProject (nameEntry, descriptionEntry) // may need to run a check to
     projectsList.push(projectsMaker(nameEntry, descriptionEntry)); 
 }
 
-function addProjectItem (projectItem) 
+function addProjectItem (projectItem)  // NEED TO ADD FOR IF THERE IS NO CURRENTLY SELECTED LIST! / nothing yet?
 {
-    currentProjectList.push(projectItem);
+
+    currentProjectTasks.push(projectItem);
 }
 
 function toggleProject (inputSelection) // move to currently elected project may need global var to track
 {
+    // need a toggle for 0 projects??  need to initialize currentProejct tasks if first project selection
+
+
+
     for (let search = 0; search <= projectsList.length-1; search ++)
     {
         if (projectsList[search].projectName == inputSelection)
         {
             currentProject = projectsList[search];
-            currentProjectList = projectsList[search].listOfTasks;
+            currentProjectTasks = projectsList[search].listOfTasks;
             return true;
         }
         else 
@@ -78,11 +107,11 @@ function toggleProject (inputSelection) // move to currently elected project may
 
 function deleteProjectItem (projectItem) // searches through current projects list to delete
 {
-    for (let findName = 0; findName <= currentProjectList.length-1; findName ++)
+    for (let findName = 0; findName <= currentProjectTasks.length-1; findName ++)
     {
-        if (currentProjectList[findName].projectItemName == projectItem.projectItemName)
+        if (currentProjectTasks[findName].projectItemName == projectItem.projectItemName)
         {
-            currentProjectList.splice(findName, 1);
+            currentProjectTasks.splice(findName, 1);
         }
         else
         {
@@ -93,4 +122,4 @@ function deleteProjectItem (projectItem) // searches through current projects li
     return console.log('did what could be done');
 }
 
-export {getCurrentProjectName, makeProject, addProjectItem, deleteProject, displayProjects, toggleProject, displayCurrentProject, deleteProjectItem};
+export {getProjectNames, getCurrentProjectList, getCurrentProjectName, makeProject, addProjectItem, deleteProject, displayProjects, toggleProject, displayCurrentProject, deleteProjectItem};
