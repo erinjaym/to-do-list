@@ -2,7 +2,7 @@ import {makeDailyItem, toggleDailyComplete, toggleDailyPriority, changeDailyDeta
 import {addDaily, deleteDaily, displayDailyProjects} from './dailyprojects.js'
 import {makeProjectItem, toggleComplete, togglePriority, changeDetail, changeName} from './projectitem.js';
 import {getCurrentProjectName, getProjectNames, makeProject, toggleProject, addProjectItem, deleteProject, displayProjects, displayCurrentProject, deleteProjectItem} from './projects.js'
-import {repopulateNavBar} from './screencontent.js';
+import {populateNavBar} from './screencontent.js';
 
 //Project and dailyProject functionally now good to go 
 let test = makeProject ("Name", "Details");
@@ -16,7 +16,7 @@ const Peru = makeProjectItem("Peru", "learn all the spanish", "Low" );
 
 displayProjects();
 displayCurrentProject();
-repopulateNavBar();
+populateNavBar();
 
 
 
