@@ -192,28 +192,91 @@ function populateNavBar ()
         const taskListDisplay = () => 
         {
 
-            let taskList = document.createElement('main');
-            taskList.className = "task-container";
-            taskList.id = "task-list";
-            content.appendChild(taskList);
+            let taskListContainer = document.createElement('main');
+            taskListContainer.className = "task-container";
+            taskListContainer.id = "task-container";
+            content.appendChild(taskListContainer);
 
 
-            let taskTest = document.createElement('div');
-            taskTest.className = "";
-            taskTest.textContent = "Name: Billy, Details:  Status: "; 
+            let taskList = document.createElement('table');
+            taskList.className = "task-table";
+            taskList.id = "task-table";
+
+            let tableHeader = document.createElement('tr');
+            tableHeader.className = "table-header";
+            tableHeader.id = "table-headers";
+                let tableHeading1 = document.createElement('th');
+                tableHeading1.textContent = "Name";
+                let tableHeading2 = document.createElement('th');
+                tableHeading2.textContent = "Details";
+                let tableHeading3 = document.createElement('th');
+                tableHeading3.textContent = "Priority";
+                let tableHeading4 = document.createElement('th');
+                tableHeading4.textContent = "Status";
+
+                tableHeader.appendChild(tableHeading1);
+                tableHeader.appendChild(tableHeading2);
+                tableHeader.appendChild(tableHeading3);
+                tableHeader.appendChild(tableHeading4);
+            taskList.appendChild(tableHeader);
+
+                // table for dailyItems 
+            let inputArray = displayDailyProjects();
+            console.log(inputArray.length-1);
+
+            for (let arraySpot = 0; arraySpot <= inputArray.length-1; arraySpot ++)
+            {
+                let tableContent = document.createElement('tr');
+
+                tableContent.id = inputArray[arraySpot].dailyName; // first slot in array should always be name
+
+                for (let tableData = 0; tableData <= 3; tableData++)
+                {
+                    if (tableData == 0)
+                        {
+                            let taskName = document.createElement('td');
+                            //taskName.className - "";
+                            taskName.textContent = inputArray[arraySpot].dailyName;
+                            tableContent.appendChild(taskName);
+                        }
+                    else if (tableData == 1)
+                        {
+                            let taskDetails = document.createElement('td');
+                            //taskDetails.className - "";
+                            taskDetails.textContent = inputArray[arraySpot].detail;
+                            tableContent.appendChild(taskDetails);
+                        }
+                    else if (tableData == 2)
+                        {
+                            let taskPriority = document.createElement('td');
+                            //taskPriority.className - "";
+                            taskPriority.textContent = inputArray[arraySpot].priority;
+                            tableContent.appendChild(taskPriority);
+                        }
+                    else if (tableData == 3)
+                        {
+                            let taskStatus = document.createElement('td');
+                            //taskStatus.className - "";
+                            taskStatus.textContent = inputArray[arraySpot].completed;
+                            tableContent.appendChild(taskStatus);
+                        }
+                    else {} // basecase
+                }
+                taskList.appendChild(tableContent);
+            
+            }
 
 
-            taskList.appendChild(taskTest);
-            content.appendChild(taskList);
+            taskListContainer.appendChild(taskList);
         }
 
 
         const clearDisplay = () =>
         {
-        let projectHeader = document.getElementById('project-display');
-        let projectTasks = document.getElementById('task-list');
-        projectHeader.parentNode.removeChild(projectHeader);
-        projectTasks.parentNode.removeChild(projectTasks);
+            let projectHeader = document.getElementById('project-display');
+            let projectTasks = document.getElementById('task-list');
+            projectHeader.parentNode.removeChild(projectHeader); // issue?
+            projectTasks.parentNode.removeChild(projectTasks);
         }
 
 
@@ -223,15 +286,16 @@ function populateNavBar ()
 
     function displayProject() // to add exception for when there are no projects left to delete that will just stay displaying daily
     {
-        projectMenuModule.clearDisplay(); // clear old project display
+        //projectMenuModule.clearDisplay(); // clear old project display
         projectMenuModule.projectHeadingDisplay(); // display currently toggled project
         projectMenuModule.taskListDisplay(); // display currently toggled projects task list
     }
 
 projectMenuModule.projectHeadingDisplay(); // initial display
-projectMenuModule.taskListDisplay();    // initial display
+//projectMenuModule.taskListDisplay();    // initial display
 
 
 
 
-export {populateNavBar};
+
+export {populateNavBar, displayProject};
