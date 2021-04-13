@@ -110,3 +110,24 @@
     -1px -1px 0px #fff;
   top: 0px;
 }
+
+.table-header
+{
+  background-color: red;
+  border-color: red;
+  broder: solid 1px;
+}
+
+.task-table
+{
+  border-collapse: collapse;
+  border-bottom: solid black 1px;
+  margin: 25px 0;
+  font-size: 1.5em;
+  min-width: 400px;
+}
+
+td
+{
+  border-bottom: solid black 1px;
+}
