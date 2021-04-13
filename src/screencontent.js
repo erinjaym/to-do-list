@@ -1,5 +1,6 @@
 import {getCurrentProjectList, getProjectNames, makeProject, deleteProject, toggleProject, getCurrentProjectName} from './projects';
-import {displayDailyProjects} from './dailyprojects'; // daily Task Items 
+import {displayDailyProjects, addDaily, deleteDaily} from './dailyprojects'; // daily Task Items 
+import {makeDailyItem, toggleDailyComplete, toggleDailyPriority, changeDailyDetail, changeDailyName} from './dailyitem';
 
 let projectsToDisplay = getProjectNames(); //this will need to refresh;
 const content = document.getElementById('content');
@@ -158,18 +159,20 @@ function populateNavBar ()
             projectTitle.textContent = currentProjectTitle;
             currentProject.appendChild(projectTitle);
 
-        
-
-        // project task buttons 
+ 
+        // project task buttons make two sets of button functions ... daily task buttons and then project task buttons 
             let taskOptions = document.createElement('sl-button-group');
             let addTask = document.createElement('sl-button');
             addTask.setAttribute("type", "success");
-
-
-            addTask.addEventListener("click", function()
-            {
-                alert('does stuff'); //connect to add task function for current project
-            });
+                addTask.addEventListener("click", function()
+                {
+                let taskName = window.prompt("Enter DAILY TASK", "My TASK");
+                let taskDetails = window.prompt("Enter Details", "My Details");
+                let taskPriority = window.prompt("Enter priority", "MED");
+                let newTask = makeDailyItem(taskName, taskDetails, taskPriority);
+                addDaily(newTask);
+                displayProject();
+                });
             addTask.textContent = "ADD TASK";
             addTask.id = "add-task";
             taskOptions.appendChild(addTask);
@@ -179,9 +182,11 @@ function populateNavBar ()
             removeTask.textContent = "REMOVE TASK";
             removeTask.id = "remove-task";
             removeTask.addEventListener("click", function()
-            {
-                alert("Delete stuffs"); //connect to remove task function for current project
-            });
+                {
+                let dailyName = window.prompt("Enter Task Name", "My TASK"); // placeholder until eventlisteners install
+                deleteDaily(dailyName);
+                displayProject();
+                });
             taskOptions.appendChild(removeTask);
 
             currentProject.appendChild(taskOptions);
@@ -222,7 +227,6 @@ function populateNavBar ()
 
                 // table for dailyItems 
             let inputArray = displayDailyProjects();
-            console.log(inputArray.length-1);
 
             for (let arraySpot = 0; arraySpot <= inputArray.length-1; arraySpot ++)
             {
@@ -286,6 +290,8 @@ function populateNavBar ()
 
     function displayProject() // to add exception for when there are no projects left to delete that will just stay displaying daily
     {
+
+        
         //projectMenuModule.clearDisplay(); // clear old project display
         projectMenuModule.projectHeadingDisplay(); // display currently toggled project
         projectMenuModule.taskListDisplay(); // display currently toggled projects task list

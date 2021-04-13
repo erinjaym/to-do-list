@@ -7,11 +7,11 @@ function displayDailyProjects ()
     return dailyTaskDisplay;
 }
 
-function deleteDaily (dailyItem) // need to add exception for list being empty
+function deleteDaily (dailyItemName) // need to add exception for list being empty 
 {
     for (let findName = 0; findName <= dailyProjectsList.length-1; findName ++)
     {
-        if (dailyProjectsList[findName].dailyName == dailyItem.dailyName)
+        if (dailyProjectsList[findName].dailyName == dailyItemName)
         {
             dailyProjectsList.splice(findName, 1);
         }
