@@ -1,9 +1,11 @@
-import {getCurrentProjectList, getProjectNames, makeProject, deleteProject, toggleProject, getCurrentProjectName} from './projects';
-import {displayDailyProjects, addDaily, deleteDaily} from './dailyprojects'; // daily Task Items 
+import {getCurrentProjectTaskList, getProjectNames, makeProject, deleteProject, toggleProject, getCurrentProjectName, getProjects, addProjectItem, deleteProjectItem} from './projects';
+import {makeProjectItem, toggleComplete, togglePriority, changeDetail, changeName} from './projectitem.js';
+import {displayDailyProjects, addDaily, deleteDaily} from './dailyprojects'; 
 import {makeDailyItem, toggleDailyComplete, toggleDailyPriority, changeDailyDetail, changeDailyName} from './dailyitem';
 
-let projectsToDisplay = getProjectNames(); //this will need to refresh;
+let projectsToDisplay = getProjectNames(); 
 const content = document.getElementById('content');
+let selectedProject = "Daily Tasks";
 
 
 const navBarModule = (() => {
@@ -45,6 +47,7 @@ const navBarModule = (() => {
                 makeProject (projectName, projectDetails); //adds to project list
                 populateNavBar();       // puts back on nav bar
                 toggleProject(projectName); // puts on correct project to add stuff
+                selectedProject = projectName;
                 displayProject();
 
                 });
@@ -61,7 +64,9 @@ const navBarModule = (() => {
                 let projectName = window.prompt("Enter Project NAME", "my deletion"); // placeholder until mouse selectors are added
                 // will need to clear display to Default display of tasks as well with displayProject();
                 deleteProject (projectName); //deletets project ... need to add how to input
-                populateNavBar();  
+                populateNavBar();
+                selectedProject = "Daily Tasks";
+                displayProject();  
                 alert("Delete stuffs");
                 });
             projectOptions.appendChild(removeProject);
@@ -76,6 +81,12 @@ const navBarModule = (() => {
             let dailyProject = document.createElement('div'); // Daily Projects never leaves
             dailyProject.className = "active-project";
             dailyProject.textContent = "Daily Tasks";
+            dailyProject.addEventListener('click', function (){
+                selectedProject = "Daily Tasks";
+                console.log(selectedProject);
+                displayProject();
+                // call displayProject()
+            });
             activeProjects.appendChild(dailyProject);
 
             navBar.appendChild(activeProjects); // append projects
@@ -90,12 +101,19 @@ const navBarModule = (() => {
                 for (let currentProject = 0; currentProject <= projectsToDisplay.length-1; currentProject++)
                 {
                     let projectName = projectsToDisplay[currentProject];
-                    let displayProject = document.createElement('div');
-                    displayProject.className = "active-project";
-                    displayProject.textContent = projectName;
-                    displayProject.id = projectName;
+                    let theProject = document.createElement('div');
+                    theProject.className = "active-project";
+                    theProject.textContent = projectName;
+                    theProject.id = projectName;
                    //displayProject.addEventListener("click", function () {toggleProject(projectName)}); // pass project name to selector
-                    activeProjects.appendChild(displayProject);
+                    theProject.addEventListener('click', function ()
+                    {
+                        selectedProject = projectName;
+                        console.log(selectedProject);
+                        displayProject();
+
+                    });
+                    activeProjects.appendChild(theProject);
                 }   
     }
 
@@ -139,58 +157,106 @@ function populateNavBar ()
 
         const projectHeadingDisplay = () =>
         {
-        // EDIT TASKTEST and PROJECT TITLE TO populate TEXT / information utilizing arrays
-        let currentProject = document.createElement("div");
-        currentProject.className = ("project-name-display");
-        currentProject.id = "project-display";
-            let projectTitle = document.createElement("div");
-            let toggledProjectName = getCurrentProjectName();
-            let currentProjectTitle = "Default";
-            if (toggledProjectName == "nofutureprojects") // display default daily
+
+            if (selectedProject == "Daily Tasks") // populate daily project information in display 
             {
-                currentProjectTitle = "Daily Tasks";
+                //populate project name header
+                let currentProject = document.createElement("div");
+                currentProject.className = ("project-name-display");
+                currentProject.id = "project-display";
+                    let projectTitle = document.createElement("div");
+                    projectTitle.textContent = "Daily Tasks";
+                    currentProject.appendChild(projectTitle);
+
+                    // populate daily task buttons
+                    let taskOptions = document.createElement('sl-button-group');
+                    let addTask = document.createElement('sl-button');
+                    addTask.setAttribute("type", "success");
+                        addTask.addEventListener("click", function()
+                        {
+                        let taskName = window.prompt("Enter DAILY TASK", "My TASK");
+                        let taskDetails = window.prompt("Enter Details", "My Details");
+                        let taskPriority = window.prompt("Enter priority", "MED");
+                        let newTask = makeDailyItem(taskName, taskDetails, taskPriority);
+                        addDaily(newTask);
+                        displayProject();
+                        });
+                    addTask.textContent = "ADD TASK";
+                    addTask.id = "add-task";
+                    taskOptions.appendChild(addTask);
+        
+                    let removeTask = document.createElement('sl-button');
+                    removeTask.setAttribute("type", "danger");
+                    removeTask.textContent = "REMOVE TASK";
+                    removeTask.id = "remove-task";
+                    removeTask.addEventListener("click", function()
+                        {
+                        let dailyName = window.prompt("Enter Task Name", "My TASK"); // placeholder until eventlisteners install
+                        deleteDaily(dailyName);
+                        displayProject();
+                        });
+                    taskOptions.appendChild(removeTask);
+        
+                    currentProject.appendChild(taskOptions);
+                    content.appendChild(currentProject);
             }
-            else
+
+            else //populate correct future project information 
             {
-                currentProjectTitle = toggledProjectName;
+                let currentProject = document.createElement("div");
+                currentProject.className = ("project-name-display");
+                currentProject.id = "project-display";
+                    let projectTitle = document.createElement("div");
+                    let toggledProjectName = getCurrentProjectName();
+                    let currentProjectTitle = "Default";
+                    if (toggledProjectName == "nofutureprojects") // display default daily
+                    {
+                        currentProjectTitle = "Daily Tasks"; // base case 
+                    }
+                    else
+                    {
+                        currentProjectTitle = toggledProjectName;
+                    }
+        
+        
+                    projectTitle.textContent = currentProjectTitle;
+                    currentProject.appendChild(projectTitle);
+        
+         
+                // need to alter buttons to modify project tasks
+                    let taskOptions = document.createElement('sl-button-group');
+                    let addTask = document.createElement('sl-button');
+                    addTask.setAttribute("type", "success");
+                        addTask.addEventListener("click", function()
+                        {
+                        let taskName = window.prompt("Enter DAILY TASK", "My TASK");
+                        let taskDetails = window.prompt("Enter Details", "My Details");
+                        let taskPriority = window.prompt("Enter priority", "MED");
+                        let newTask = makeProjectItem(taskName, taskDetails, taskPriority);
+                        addProjectItem(newTask); 
+                        displayProject();
+                        });
+                    addTask.textContent = "ADD TASK";
+                    addTask.id = "add-task";
+                    taskOptions.appendChild(addTask);
+        
+                    let removeTask = document.createElement('sl-button');
+                    removeTask.setAttribute("type", "danger");
+                    removeTask.textContent = "REMOVE TASK";
+                    removeTask.id = "remove-task";
+                    removeTask.addEventListener("click", function()
+                        {
+                        let taskName = window.prompt("Enter Task Name", "My TASK"); // placeholder until eventlisteners install
+                        deleteProjectItem(taskName); 
+                        displayProject();
+                        });
+                    taskOptions.appendChild(removeTask);
+        
+                    currentProject.appendChild(taskOptions);
+                    content.appendChild(currentProject);
+
             }
 
-
-            projectTitle.textContent = currentProjectTitle;
-            currentProject.appendChild(projectTitle);
-
- 
-        // project task buttons make two sets of button functions ... daily task buttons and then project task buttons 
-            let taskOptions = document.createElement('sl-button-group');
-            let addTask = document.createElement('sl-button');
-            addTask.setAttribute("type", "success");
-                addTask.addEventListener("click", function()
-                {
-                let taskName = window.prompt("Enter DAILY TASK", "My TASK");
-                let taskDetails = window.prompt("Enter Details", "My Details");
-                let taskPriority = window.prompt("Enter priority", "MED");
-                let newTask = makeDailyItem(taskName, taskDetails, taskPriority);
-                addDaily(newTask);
-                displayProject();
-                });
-            addTask.textContent = "ADD TASK";
-            addTask.id = "add-task";
-            taskOptions.appendChild(addTask);
-
-            let removeTask = document.createElement('sl-button');
-            removeTask.setAttribute("type", "danger");
-            removeTask.textContent = "REMOVE TASK";
-            removeTask.id = "remove-task";
-            removeTask.addEventListener("click", function()
-                {
-                let dailyName = window.prompt("Enter Task Name", "My TASK"); // placeholder until eventlisteners install
-                deleteDaily(dailyName);
-                displayProject();
-                });
-            taskOptions.appendChild(removeTask);
-
-            currentProject.appendChild(taskOptions);
-            content.appendChild(currentProject);
 
         }  
 
@@ -202,77 +268,159 @@ function populateNavBar ()
             taskListContainer.id = "task-container";
             content.appendChild(taskListContainer);
 
-
             let taskList = document.createElement('table');
             taskList.className = "task-table";
             taskList.id = "task-table";
 
-            let tableHeader = document.createElement('tr');
-            tableHeader.className = "table-header";
-            tableHeader.id = "table-headers";
-                let tableHeading1 = document.createElement('th');
-                tableHeading1.textContent = "Name";
-                let tableHeading2 = document.createElement('th');
-                tableHeading2.textContent = "Details";
-                let tableHeading3 = document.createElement('th');
-                tableHeading3.textContent = "Priority";
-                let tableHeading4 = document.createElement('th');
-                tableHeading4.textContent = "Status";
+            if (selectedProject == "Daily Tasks") // populate daily project information in display 
+            {
 
-                tableHeader.appendChild(tableHeading1);
-                tableHeader.appendChild(tableHeading2);
-                tableHeader.appendChild(tableHeading3);
-                tableHeader.appendChild(tableHeading4);
-            taskList.appendChild(tableHeader);
+                let tableHeader = document.createElement('tr');
+                tableHeader.className = "table-header";
+                tableHeader.id = "table-headers";
+                    let tableHeading1 = document.createElement('th');
+                        tableHeading1.textContent = "Name";
+                    let tableHeading2 = document.createElement('th');
+                        tableHeading2.textContent = "Details";
+                    let tableHeading3 = document.createElement('th');
+                        tableHeading3.textContent = "Priority";
+                    let tableHeading4 = document.createElement('th');
+                        tableHeading4.textContent = "Status";
+
+                    tableHeader.appendChild(tableHeading1);
+                    tableHeader.appendChild(tableHeading2);
+                    tableHeader.appendChild(tableHeading3);
+                    tableHeader.appendChild(tableHeading4);
+                taskList.appendChild(tableHeader);
 
                 // table for dailyItems 
-            let inputArray = displayDailyProjects();
+                let inputArray = displayDailyProjects();
 
-            for (let arraySpot = 0; arraySpot <= inputArray.length-1; arraySpot ++)
-            {
-                let tableContent = document.createElement('tr');
-
-                tableContent.id = inputArray[arraySpot].dailyName; // first slot in array should always be name
-
-                for (let tableData = 0; tableData <= 3; tableData++)
+                for (let arraySpot = 0; arraySpot <= inputArray.length-1; arraySpot ++)
                 {
-                    if (tableData == 0)
-                        {
-                            let taskName = document.createElement('td');
-                            //taskName.className - "";
-                            taskName.textContent = inputArray[arraySpot].dailyName;
-                            tableContent.appendChild(taskName);
-                        }
-                    else if (tableData == 1)
-                        {
-                            let taskDetails = document.createElement('td');
-                            //taskDetails.className - "";
-                            taskDetails.textContent = inputArray[arraySpot].detail;
-                            tableContent.appendChild(taskDetails);
-                        }
-                    else if (tableData == 2)
-                        {
-                            let taskPriority = document.createElement('td');
-                            //taskPriority.className - "";
-                            taskPriority.textContent = inputArray[arraySpot].priority;
-                            tableContent.appendChild(taskPriority);
-                        }
-                    else if (tableData == 3)
-                        {
-                            let taskStatus = document.createElement('td');
-                            //taskStatus.className - "";
-                            taskStatus.textContent = inputArray[arraySpot].completed;
-                            tableContent.appendChild(taskStatus);
-                        }
-                    else {} // basecase
-                }
-                taskList.appendChild(tableContent);
+                    let tableContent = document.createElement('tr');
+
+                    tableContent.id = inputArray[arraySpot].dailyName; // first slot in array should always be name
+
+                    for (let tableData = 0; tableData <= 3; tableData++)
+                    {
+                        if (tableData == 0)
+                            {
+                                let taskName = document.createElement('td');
+                                //taskName.className - "";
+                                taskName.textContent = inputArray[arraySpot].dailyName;
+                                tableContent.appendChild(taskName);
+                            }
+                        else if (tableData == 1)
+                            {
+                                let taskDetails = document.createElement('td');
+                                //taskDetails.className - "";
+                                taskDetails.textContent = inputArray[arraySpot].detail;
+                                tableContent.appendChild(taskDetails);
+                            }
+                        else if (tableData == 2)
+                            {
+                                let taskPriority = document.createElement('td');
+                                //taskPriority.className - "";
+                                taskPriority.textContent = inputArray[arraySpot].priority;
+                                tableContent.appendChild(taskPriority);
+                            }
+                        else if (tableData == 3)
+                            {
+                                let taskStatus = document.createElement('td');
+                                //taskStatus.className - "";
+                                taskStatus.textContent = inputArray[arraySpot].completed;
+                                tableContent.appendChild(taskStatus);
+                            }
+                        else {} // basecase
+                    }
+                    taskList.appendChild(tableContent);
             
+                }
+                taskListContainer.appendChild(taskList);
             }
+        
+            else //selectedProject != "Daily Tasks" for project task display
+            {
+
+                let tableHeader = document.createElement('tr');
+                tableHeader.className = "table-header";
+                tableHeader.id = "table-headers";
+                    let tableHeading1 = document.createElement('th');
+                        tableHeading1.textContent = "Name";
+                    let tableHeading2 = document.createElement('th');
+                        tableHeading2.textContent = "Details";
+                    let tableHeading3 = document.createElement('th');
+                        tableHeading3.textContent = "Priority";
+                    let tableHeading4 = document.createElement('th');
+                        tableHeading4.textContent = "Status";
+                    let tableHeading5 = document.createElement('th');
+                        tableHeading5.textContent = "Due Date";
+
+                    tableHeader.appendChild(tableHeading1);
+                    tableHeader.appendChild(tableHeading2);
+                    tableHeader.appendChild(tableHeading3);
+                    tableHeader.appendChild(tableHeading4);
+                    tableHeader.appendChild(tableHeading5);
+                taskList.appendChild(tableHeader);
+
+                // table for dailyItems 
+                let inputArray = getCurrentProjectTaskList();
+                console.log(inputArray);
+
+                for (let arraySpot = 0; arraySpot <= inputArray.length-1; arraySpot ++)
+                {
+                    let tableContent = document.createElement('tr');
+
+                    tableContent.id = inputArray[arraySpot].dailyName; // first slot in array should always be name
+
+                    for (let tableData = 0; tableData <= 4; tableData++)
+                    {
+                        if (tableData == 0)
+                            {
+                                let taskName = document.createElement('td');
+                                //taskName.className - "";
+                                taskName.textContent = inputArray[arraySpot].projectItemName;
+                                tableContent.appendChild(taskName);
+                            }
+                        else if (tableData == 1)
+                            {
+                                let taskDetails = document.createElement('td');
+                                //taskDetails.className - "";
+                                taskDetails.textContent = inputArray[arraySpot].detail;
+                                tableContent.appendChild(taskDetails);
+                            }
+                        else if (tableData == 2)
+                            {
+                                let taskPriority = document.createElement('td');
+                                //taskPriority.className - "";
+                                taskPriority.textContent = inputArray[arraySpot].priority;
+                                tableContent.appendChild(taskPriority);
+                            }
+                        else if (tableData == 3)
+                            {
+                                let taskStatus = document.createElement('td');
+                                //taskStatus.className - "";
+                                taskStatus.textContent = inputArray[arraySpot].completed;
+                                tableContent.appendChild(taskStatus);
+                            }
+                        else if (tableData == 4) 
+                            {
+                                let taskStatus = document.createElement('td');
+                                //taskStatus.className - "";
+                                taskStatus.textContent = inputArray[arraySpot].dueDate;
+                                tableContent.appendChild(taskStatus);
+                            } 
+                        else {} // bascase
+                    }
+                    taskList.appendChild(tableContent);
+            
+                }
+                taskListContainer.appendChild(taskList);
 
 
-            taskListContainer.appendChild(taskList);
-        }
+            } // end of else statement for project task display
+        } // end of taskListDisplay
 
 
         const clearDisplay = () =>

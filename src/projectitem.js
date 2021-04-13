@@ -3,7 +3,7 @@ let projectItemMaker = (nameEntry, detailEntry, priorityEntry, dueDateEntry) => 
     let detail = detailEntry;
     let completed = false;
     let priority = priorityEntry;
-    let dueDate = dueDateEntry;
+    let dueDate = "10/10";
 
     function info() { 
         console.log("Item Info: " + this.projectItemName + " " + this.detail + " " + this.completed + " " + this.priority);

@@ -10,11 +10,10 @@ let listOfTasks = [];
 return {projectName, description, listOfTasks};
 };
 
-function displayProjects ()
+function getProjects ()
 {
-    let displayProjectsList = projectsList;
-    console.log(displayProjectsList);
-    return displayProjectsList; //shows list of projects for testing 
+    let theProjects = projectsList;
+    return theProjects; //shows list of projects for testing 
 }
 
 function getProjectNames ()
@@ -33,7 +32,7 @@ function getProjectNames ()
 }
 
 
-function getCurrentProjectList() // list of items in each proejct ?? ... same as whats underneath?? 
+function getCurrentProjectTaskList() // list of items in each proejct ?? ... same as whats underneath?? 
 {
     let allProjects = currentProjectTasks;
     console.log(allProjects);
@@ -121,11 +120,11 @@ else
 
 }
 
-function deleteProjectItem (projectItem) // searches through current projects list to delete
+function deleteProjectItem (projectItemName) // searches through current projects list to delete
 {
     for (let findName = 0; findName <= currentProjectTasks.length-1; findName ++)
     {
-        if (currentProjectTasks[findName].projectItemName == projectItem.projectItemName)
+        if (currentProjectTasks[findName].projectItemName == projectItemName)
         {
             currentProjectTasks.splice(findName, 1);
         }
@@ -138,4 +137,4 @@ function deleteProjectItem (projectItem) // searches through current projects li
     return console.log('did what could be done');
 }
 
-export {getProjectNames, getCurrentProjectList, getCurrentProjectName, makeProject, addProjectItem, deleteProject, displayProjects, toggleProject, displayCurrentProject, deleteProjectItem};
+export {getProjectNames, getCurrentProjectTaskList, getCurrentProjectName, makeProject, addProjectItem, deleteProject, getProjects, toggleProject, displayCurrentProject, deleteProjectItem};
