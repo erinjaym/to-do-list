@@ -1,4 +1,4 @@
-import {getCurrentProjectList, getProjectNames, makeProject, deleteProject} from './projects';
+import {getCurrentProjectList, getProjectNames, makeProject, deleteProject, toggleProject, getCurrentProjectName} from './projects';
 import {displayDailyProjects} from './dailyprojects'; // daily Task Items 
 
 let projectsToDisplay = getProjectNames(); //this will need to refresh;
@@ -36,14 +36,15 @@ const navBarModule = (() => {
             // Nav bar/Project buttons 
             let projectOptions = document.createElement('sl-button-group');
             let addProject = document.createElement('sl-button');
-            addProject.setAttribute("type", "success");
-            //addProject.onclick (makeProject(projectPopUp()));  
+            addProject.setAttribute("type", "success");  
             addProject.addEventListener("click", function()
                 {
                 let projectName = window.prompt("Project Name: ", "myproject"); // placeholder until UI is fully functional create stylized entry later
-                let projectDetails = window.prompt("Ptoject Details:", "My details");
+                let projectDetails = window.prompt("Project Details:", "My details");
                 makeProject (projectName, projectDetails); //adds to project list
                 populateNavBar();       // puts back on nav bar
+                toggleProject(projectName); // puts on correct project to add stuff
+                displayProject();
 
                 });
             addProject.textContent = "ADD";
@@ -57,6 +58,7 @@ const navBarModule = (() => {
             removeProject.addEventListener("click", function()
                 {
                 let projectName = window.prompt("Enter Project NAME", "my deletion"); // placeholder until mouse selectors are added
+                // will need to clear display to Default display of tasks as well with displayProject();
                 deleteProject (projectName); //deletets project ... need to add how to input
                 populateNavBar();  
                 alert("Delete stuffs");
@@ -83,8 +85,6 @@ const navBarModule = (() => {
 
     const displayActiveProjects = () => 
     {
-        console.log(projectsToDisplay);
-        console.log('Display TEST');
                     // add all projects from projectList array ito active projects container here
                 for (let currentProject = 0; currentProject <= projectsToDisplay.length-1; currentProject++)
                 {
@@ -92,6 +92,8 @@ const navBarModule = (() => {
                     let displayProject = document.createElement('div');
                     displayProject.className = "active-project";
                     displayProject.textContent = projectName;
+                    displayProject.id = projectName;
+                   //displayProject.addEventListener("click", function () {toggleProject(projectName)}); // pass project name to selector
                     activeProjects.appendChild(displayProject);
                 }   
     }
@@ -108,7 +110,7 @@ const navBarModule = (() => {
         }
         else 
         {
-           return console.log('only daily tasks left'); 
+           return console.log('only daily tasks'); 
         }
     } 
 
@@ -121,7 +123,7 @@ let theNavBar = navBarModule.createNavBar();
 
 
 
-function populateNavBar () // need to re import project list before call 
+function populateNavBar () 
 {
     navBarModule.clearProjectDisplay();
     projectsToDisplay = getProjectNames();
@@ -129,30 +131,106 @@ function populateNavBar () // need to re import project list before call
 }
 
 
-createTaskList();
-    function createTaskList() 
+
+ // turn createTaskList into module
+    const projectMenuModule = (() => 
     {
 
+        const projectHeadingDisplay = () =>
+        {
         // EDIT TASKTEST and PROJECT TITLE TO populate TEXT / information utilizing arrays
-        let projectTitle = document.createElement("div");
-        projectTitle.className = ("project-name-display");
-        projectTitle.textContent = "TEST PROJECT";
-        content.appendChild(projectTitle);
+        let currentProject = document.createElement("div");
+        currentProject.className = ("project-name-display");
+        currentProject.id = "project-display";
+            let projectTitle = document.createElement("div");
+            let toggledProjectName = getCurrentProjectName();
+            let currentProjectTitle = "Default";
+            if (toggledProjectName == "nofutureprojects") // display default daily
+            {
+                currentProjectTitle = "Daily Tasks";
+            }
+            else
+            {
+                currentProjectTitle = toggledProjectName;
+            }
 
-        let taskList = document.createElement('main');
-        taskList.className = "task-container";
-        taskList.id = "task-list";
-        content.appendChild(taskList);
+
+            projectTitle.textContent = currentProjectTitle;
+            currentProject.appendChild(projectTitle);
+
+        
+
+        // project task buttons 
+            let taskOptions = document.createElement('sl-button-group');
+            let addTask = document.createElement('sl-button');
+            addTask.setAttribute("type", "success");
 
 
-        let taskTest = document.createElement('div');
-        taskTest.className = "";
-        taskTest.textContent = "Name: Billy, Details:  Status: "; 
+            addTask.addEventListener("click", function()
+            {
+                alert('does stuff'); //connect to add task function for current project
+            });
+            addTask.textContent = "ADD TASK";
+            addTask.id = "add-task";
+            taskOptions.appendChild(addTask);
+
+            let removeTask = document.createElement('sl-button');
+            removeTask.setAttribute("type", "danger");
+            removeTask.textContent = "REMOVE TASK";
+            removeTask.id = "remove-task";
+            removeTask.addEventListener("click", function()
+            {
+                alert("Delete stuffs"); //connect to remove task function for current project
+            });
+            taskOptions.appendChild(removeTask);
+
+            currentProject.appendChild(taskOptions);
+            content.appendChild(currentProject);
+
+        }  
+
+        const taskListDisplay = () => 
+        {
+
+            let taskList = document.createElement('main');
+            taskList.className = "task-container";
+            taskList.id = "task-list";
+            content.appendChild(taskList);
 
 
-        taskList.appendChild(taskTest);
-        content.appendChild(taskList);
+            let taskTest = document.createElement('div');
+            taskTest.className = "";
+            taskTest.textContent = "Name: Billy, Details:  Status: "; 
+
+
+            taskList.appendChild(taskTest);
+            content.appendChild(taskList);
+        }
+
+
+        const clearDisplay = () =>
+        {
+        let projectHeader = document.getElementById('project-display');
+        let projectTasks = document.getElementById('task-list');
+        projectHeader.parentNode.removeChild(projectHeader);
+        projectTasks.parentNode.removeChild(projectTasks);
+        }
+
+
+        return {projectHeadingDisplay, taskListDisplay, clearDisplay}
+
+    }) ();
+
+    function displayProject() // to add exception for when there are no projects left to delete that will just stay displaying daily
+    {
+        projectMenuModule.clearDisplay(); // clear old project display
+        projectMenuModule.projectHeadingDisplay(); // display currently toggled project
+        projectMenuModule.taskListDisplay(); // display currently toggled projects task list
     }
+
+projectMenuModule.projectHeadingDisplay(); // initial display
+projectMenuModule.taskListDisplay();    // initial display
+
 
 
 

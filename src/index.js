@@ -5,16 +5,11 @@ import {getCurrentProjectName, getProjectNames, makeProject, toggleProject, addP
 import {populateNavBar} from './screencontent.js';
 
 //Project and dailyProject functionally now good to go 
-let test = makeProject ("Name", "Details");
-
-// toggle is currently manual
-const Japanese = makeProjectItem("Japanese", "Learn all the Japanese", "High");
-const Spanish = makeProjectItem("Spanish", "learn all the spanish", "Low" );
-makeProject ("Name2", "Stuff");
-const Peru = makeProjectItem("Peru", "learn all the spanish", "Low" );
 
 
-displayProjects();
+
+
+displayProjects(); // need to delete from projects now was initial testing before ui?
 displayCurrentProject();
 populateNavBar();
 

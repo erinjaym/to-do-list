@@ -21,19 +21,15 @@ function getProjectNames ()
 {
     let namesList = [];
     let theProjects = projectsList; 
-    if(projectsList.length == 0)
-    {}
-    else 
-    {
-         for (let currentName = 0; currentName <= projectsList.length-1; currentName++)
-       {
-           console.log('making names list');
-            let projectName = theProjects[currentName].projectName;
-            namesList.push(projectName);
-        }
-        return namesList;
-    }
-    return console.log("No projects Yet");
+
+            for (let currentName = 0; currentName <= projectsList.length-1; currentName++)
+            {
+                console.log('making names list');
+                let projectName = theProjects[currentName].projectName;
+                namesList.push(projectName);
+            }
+
+    return namesList;
 }
 
 
@@ -51,7 +47,18 @@ function displayCurrentProject ()
 
 function getCurrentProjectName()
 {
-    return console.log(currentProject.projectName); // returns current project name
+    if (currentProject == "None")
+    {
+        return "nofutureprojects";
+
+    }
+    else 
+    {
+    console.log(currentProject);
+    console.log(currentProject.projectName);
+    let currentProjectName = currentProject.projectName;
+    return currentProjectName; // returns current project name
+    }
 }
 
 function deleteProject (userInput) 
@@ -83,25 +90,34 @@ function addProjectItem (projectItem)  // NEED TO ADD FOR IF THERE IS NO CURRENT
     currentProjectTasks.push(projectItem);
 }
 
-function toggleProject (inputSelection) // move to currently elected project may need global var to track
+function toggleProject (projectName) // move to currently elected project may need global var to track
 {
     // need a toggle for 0 projects??  need to initialize currentProejct tasks if first project selection
-
-
-
-    for (let search = 0; search <= projectsList.length-1; search ++)
-    {
-        if (projectsList[search].projectName == inputSelection)
+//    let projectsList = [];
+if (projectsList.length == 0)
+{
+    console('should not be getting called failsafe');
+    return false;
+}
+else 
+{
+        for (let search = 0; search <= projectsList.length-1; search ++)
         {
-            currentProject = projectsList[search];
-            currentProjectTasks = projectsList[search].listOfTasks;
-            return true;
+            if (projectsList[search].projectName == projectName)
+            {
+                currentProject = projectsList[search];
+                currentProjectTasks = projectsList[search].listOfTasks;
+                console.log('toggled to:');
+                console.log(currentProject);
+                console.log(currentProjectTasks);
+                return true;
+            }
+            else 
+            {
+                 console.log('not found keep going');
+            }
         }
-        else 
-        {
-           // console.log('not found keep going');
-        }
-    }
+}
 
 }
 
