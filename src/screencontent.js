@@ -6,6 +6,7 @@ import {makeDailyItem, toggleDailyComplete, toggleDailyPriority, changeDailyDeta
 let projectsToDisplay = getProjectNames(); 
 const content = document.getElementById('content');
 let selectedProject = "Daily Tasks";
+let selectedTask = "Task Name";
 
 
 const navBarModule = (() => {
@@ -50,19 +51,18 @@ const navBarModule = (() => {
                     {
                         let lastProjectSelection = document.getElementById(selectedProject); //exception for deleted items?? 
                         lastProjectSelection.className = "active-project";
-                        toggleProject(projectName); // puts on correct project to add stuff
+                        toggleProject(projectName); // toggles correct project in projects to add stuff
                         selectedProject = projectName;
                         displayProject();
-                        populateNavBar();       // puts on nav bar
+                        populateNavBar();       
 
                     }
-                    else  //should be impossible
+                    else  //just in case but should be impossible
                     {
-                        
                         toggleProject(projectName); // puts on correct project to add stuff
                         selectedProject = projectName;
                         displayProject();
-                        populateNavBar();       // puts on nav bar
+                        populateNavBar();       
                     }
                 });
             addProject.textContent = "ADD";
@@ -75,14 +75,12 @@ const navBarModule = (() => {
             removeProject.id = "remove-project";
             removeProject.addEventListener("click", function()
                 {
-                let projectName = window.prompt("Enter Project NAME", "my deletion"); 
-                deleteProject (projectName); //deletets project ... need to add how to input
+                deleteProject (selectedProject); 
                 selectedProject = "Daily Tasks";
                 let dailyRef = document.getElementById('Daily Tasks');
                 dailyRef.className = "active-project-active";
                 displayProject();
                 populateNavBar();
-                alert("Delete stuffs");
                 });
             projectOptions.appendChild(removeProject);
             projectLinksContainer.appendChild(projectOptions);
@@ -244,7 +242,7 @@ function populateNavBar ()
                     removeTask.id = "remove-task";
                     removeTask.addEventListener("click", function()
                         {
-                        let dailyName = window.prompt("Enter Task Name", "My TASK"); // placeholder until eventlisteners install
+                        let dailyName = selectedTask;
                         deleteDaily(dailyName);
                         displayProject();
                         });
@@ -352,36 +350,62 @@ function populateNavBar ()
                 for (let arraySpot = 0; arraySpot <= inputArray.length-1; arraySpot ++)
                 {
                     let tableContent = document.createElement('tr');
+                    let taskName = inputArray[arraySpot].dailyName; 
+                    tableContent.id = taskName;
+                    addTaskListeners();
+                    function addTaskListeners () 
+                    { 
+                        tableContent.addEventListener("click", function selectTask() // add task selection event listener
+                            {
+                                let tableRow = document.getElementById(taskName);
 
-                    tableContent.id = inputArray[arraySpot].dailyName; // first slot in array should always be name
+                                if (selectedTask != taskName)
+                                { 
+                                    if (document.getElementById(selectedTask)) // if found
+                                    {
+                                    let oldTaskSelection = document.getElementById(selectedTask); 
+                                    oldTaskSelection.className = "tr"; // deselect old first on dom then select new
+                                    selectedTask = taskName;
+                                    tableRow.className = "tr-selected";
+                                    }
+                                    else // just select new
+                                    {
+                                    selectedTask = taskName;
+                                    tableRow.className = "tr-selected";
+                                    }
+                                }
+                                else // if same make sure selection is made
+                                {
+                                    tableRow.className = "tr-selected";
+                                    selectedTask = taskName;
+                                }
+                            });
+                    }
+                    
 
                     for (let tableData = 0; tableData <= 3; tableData++)
                     {
                         if (tableData == 0)
                             {
                                 let taskName = document.createElement('td');
-                                //taskName.className - "";
                                 taskName.textContent = inputArray[arraySpot].dailyName;
                                 tableContent.appendChild(taskName);
                             }
                         else if (tableData == 1)
                             {
                                 let taskDetails = document.createElement('td');
-                                //taskDetails.className - "";
                                 taskDetails.textContent = inputArray[arraySpot].detail;
                                 tableContent.appendChild(taskDetails);
                             }
                         else if (tableData == 2)
                             {
                                 let taskPriority = document.createElement('td');
-                                //taskPriority.className - "";
                                 taskPriority.textContent = inputArray[arraySpot].priority;
                                 tableContent.appendChild(taskPriority);
                             }
                         else if (tableData == 3)
                             {
                                 let taskStatus = document.createElement('td');
-                                //taskStatus.className - "";
                                 taskStatus.textContent = inputArray[arraySpot].completed;
                                 tableContent.appendChild(taskStatus);
                             }
@@ -417,7 +441,7 @@ function populateNavBar ()
                     tableHeader.appendChild(tableHeading5);
                 taskList.appendChild(tableHeader);
 
-                // table for dailyItems 
+                // table for projectItems 
                 let inputArray = getCurrentProjectTaskList();
                 console.log(inputArray);
 
@@ -425,42 +449,69 @@ function populateNavBar ()
                 {
                     let tableContent = document.createElement('tr');
 
-                    tableContent.id = inputArray[arraySpot].dailyName; // first slot in array should always be name
+                    let taskName = inputArray[arraySpot].dailyName; 
+                    tableContent.id = taskName;
+
+                    addProjectTaskListeners();
+                    function addProjectTaskListeners () 
+                    {
+                        tableContent.addEventListener("click", function selectTask() // add task selection event listener
+                            {
+                            
+                            let tableRow = document.getElementById(taskName);
+                                if (selectedTask != taskName)
+                                { 
+                                    if (document.getElementById(selectedTask)) // if found
+                                    {
+                                        let oldTaskSelection = document.getElementById(selectedTask); 
+                                        oldTaskSelection.className = "tr"; // deselect old first on dom then select new
+                                        selectedTask = taskName;
+                                        tableRow.className = "tr-selected";
+                                    }
+                                    else // just select new
+                                    {
+                                        selectedTask = taskName;
+                                        tableRow.className = "tr-selected";
+                                    }
+                                }
+                                else // if same make sure selection is made
+                                {
+                                    tableRow.className = "tr-selected";
+                                    selectedTask = taskName;
+                                }
+                            });
+                    }
+
 
                     for (let tableData = 0; tableData <= 4; tableData++)
                     {
                         if (tableData == 0)
                             {
                                 let taskName = document.createElement('td');
-                                //taskName.className - "";
                                 taskName.textContent = inputArray[arraySpot].projectItemName;
                                 tableContent.appendChild(taskName);
                             }
                         else if (tableData == 1)
                             {
                                 let taskDetails = document.createElement('td');
-                                //taskDetails.className - "";
                                 taskDetails.textContent = inputArray[arraySpot].detail;
                                 tableContent.appendChild(taskDetails);
                             }
                         else if (tableData == 2)
                             {
                                 let taskPriority = document.createElement('td');
-                                //taskPriority.className - "";
                                 taskPriority.textContent = inputArray[arraySpot].priority;
                                 tableContent.appendChild(taskPriority);
                             }
                         else if (tableData == 3)
                             {
                                 let taskStatus = document.createElement('td');
-                                //taskStatus.className - "";
                                 taskStatus.textContent = inputArray[arraySpot].completed;
                                 tableContent.appendChild(taskStatus);
                             }
                         else if (tableData == 4) 
                             {
                                 let taskStatus = document.createElement('td');
-                                //taskStatus.className - "";
                                 taskStatus.textContent = inputArray[arraySpot].dueDate;
                                 tableContent.appendChild(taskStatus);
                             } 
