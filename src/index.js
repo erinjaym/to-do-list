@@ -14,8 +14,8 @@ addDaily(Programming);
 addDaily(Writing);
 
 
-populateNavBar();
-displayProject();
+populateNavBar(); // screen content 
+displayProject(); // screen content? 
 
 
 

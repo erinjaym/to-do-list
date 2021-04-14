@@ -35,13 +35,12 @@ function getProjectNames ()
 function getCurrentProjectTaskList() // list of items in each proejct ?? ... same as whats underneath?? 
 {
     let allProjects = currentProjectTasks;
-    console.log(allProjects);
     return allProjects;
 }
 
 function displayCurrentProject ()
 {
-    return console.log(currentProject); //shows currently toggled project
+    return currentProject; //shows currently toggled project
 }
 
 function getCurrentProjectName()
@@ -53,8 +52,6 @@ function getCurrentProjectName()
     }
     else 
     {
-    console.log(currentProject);
-    console.log(currentProject.projectName);
     let currentProjectName = currentProject.projectName;
     return currentProjectName; // returns current project name
     }
@@ -71,7 +68,7 @@ function deleteProject (userInput)
         }
         else
         {
-            console.log('no match');
+            console.log('delete no match');
         }
     }
     return false;

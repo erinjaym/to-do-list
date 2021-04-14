@@ -211,7 +211,7 @@ function populateNavBar ()
 
             if (selectedProject == "Daily Tasks") // populate daily project information in display 
             {
-                //populate project name header
+                //populate name header
                 let currentProject = document.createElement("div");
                 currentProject.className = ("project-name-display");
                 currentProject.id = "project-display";
@@ -219,11 +219,15 @@ function populateNavBar ()
                     projectTitle.textContent = "Daily Tasks";
                     currentProject.appendChild(projectTitle);
 
-                    // populate daily task buttons
+                createDailyTaskButtons();
+                function createDailyTaskButtons () // populate daily task buttons
+                { 
                     let taskOptions = document.createElement('sl-button-group');
                     let addTask = document.createElement('sl-button');
                     addTask.setAttribute("type", "success");
-                        addTask.addEventListener("click", function()
+                    addTask.textContent = "ADD TASK";
+                    addTask.id = "add-task";
+                    addTask.addEventListener("click", function()
                         {
                         let taskName = window.prompt("Enter DAILY TASK", "My TASK");
                         let taskDetails = window.prompt("Enter Details", "My Details");
@@ -232,27 +236,40 @@ function populateNavBar ()
                         addDaily(newTask);
                         displayProject();
                         });
-                    addTask.textContent = "ADD TASK";
-                    addTask.id = "add-task";
                     taskOptions.appendChild(addTask);
         
+                    let editTask = document.createElement('sl-button');
+                        editTask.setAttribute("type", "warning");
+                        editTask.textContent = "EDIT";
+                        editTask.id = "edit-task";
+                        editTask.addEventListener ("click", function editProjectTask()
+                            {
+                            // alterTask();
+                            alert('edit stuffs');
+                            });
+                    taskOptions.appendChild(editTask);
+
                     let removeTask = document.createElement('sl-button');
-                    removeTask.setAttribute("type", "danger");
-                    removeTask.textContent = "REMOVE TASK";
-                    removeTask.id = "remove-task";
-                    removeTask.addEventListener("click", function()
+                        removeTask.setAttribute("type", "danger");
+                        removeTask.textContent = "REMOVE TASK";
+                        removeTask.id = "remove-task";
+                        removeTask.addEventListener("click", function removeTask()
                         {
                         let dailyName = selectedTask;
                         deleteDaily(dailyName);
                         displayProject();
                         });
+                    
                     taskOptions.appendChild(removeTask);
         
                     currentProject.appendChild(taskOptions);
-                    content.appendChild(currentProject);
+                }
+
+                content.appendChild(currentProject);
+
             }
 
-            else //populate correct future project information 
+            else //populate project information 
             {
                 let currentProject = document.createElement("div");
                 currentProject.className = ("project-name-display");
@@ -274,7 +291,7 @@ function populateNavBar ()
                     currentProject.appendChild(projectTitle);
         
          
-                // need to alter buttons to modify project tasks
+                // project task buttons
                     let taskOptions = document.createElement('sl-button-group');
                     let addTask = document.createElement('sl-button');
                     addTask.setAttribute("type", "success");
@@ -297,19 +314,15 @@ function populateNavBar ()
                     removeTask.id = "remove-task";
                     removeTask.addEventListener("click", function()
                         {
-                        let taskName = window.prompt("Enter Task Name", "My TASK"); // placeholder until eventlisteners install
-                        deleteProjectItem(taskName); 
+                        deleteProjectItem(selectedTask); 
                         displayProject();
                         });
                     taskOptions.appendChild(removeTask);
         
                     currentProject.appendChild(taskOptions);
                     content.appendChild(currentProject);
-
             }
-
-
-        }  
+        }  // end of heading display
 
         const taskListDisplay = () => 
         {
@@ -449,15 +462,15 @@ function populateNavBar ()
                 {
                     let tableContent = document.createElement('tr');
 
-                    let taskName = inputArray[arraySpot].dailyName; 
+                    let taskName = inputArray[arraySpot].projectItemName; 
                     tableContent.id = taskName;
 
                     addProjectTaskListeners();
                     function addProjectTaskListeners () 
                     {
-                        tableContent.addEventListener("click", function selectTask() // add task selection event listener
+                        tableContent.addEventListener("click", function selectProjecetTask() // add task selection event listener
                             {
-                            
+                                console.log(selectedTask);
                             let tableRow = document.getElementById(taskName);
                                 if (selectedTask != taskName)
                                 { 
@@ -526,8 +539,27 @@ function populateNavBar ()
             } // end of else statement for project task display
         } // end of taskListDisplay
 
+        const alterTask = () =>
+        {
+            let taskWindow = document.createElement('sl-dialog');
+            taskWindow.setAttribute("label", "Dialog");
+            taskWindow.textContent('Read and click stuff here');
+            taskWindow.className = "dialog-overview";
+            // taskWindow.id = "edit-task-window";
+            let closeButton = document.createElement('sl-button');
+            closeButton.setAttribute('slot', "footer");
+            closeButton.textContent = 'CLOSE';
+            closeButton.setAttribute('type', "danger");
+            taskWindow.appendChild('closeButton');
 
-        const clearDisplay = () =>
+            content.appendChild();
+
+        }
+
+
+
+
+        const clearDisplay = () => // refreshes projects and tasks bar ... not an more
         {   
 
             let projectHeader = document.getElementById('project-display');
