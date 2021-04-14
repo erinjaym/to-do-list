@@ -224,10 +224,10 @@ function populateNavBar ()
                 { 
                     let taskOptions = document.createElement('sl-button-group');
                     let addTask = document.createElement('sl-button');
-                    addTask.setAttribute("type", "success");
-                    addTask.textContent = "ADD TASK";
-                    addTask.id = "add-task";
-                    addTask.addEventListener("click", function()
+                        addTask.setAttribute("type", "success");
+                        addTask.textContent = "ADD TASK";
+                        addTask.id = "add-task";
+                        addTask.addEventListener("click", function()
                         {
                         let taskName = window.prompt("Enter DAILY TASK", "My TASK");
                         let taskDetails = window.prompt("Enter Details", "My Details");
@@ -286,15 +286,16 @@ function populateNavBar ()
                         currentProjectTitle = toggledProjectName;
                     }
         
-        
                     projectTitle.textContent = currentProjectTitle;
                     currentProject.appendChild(projectTitle);
-        
-         
+
+                createProjectTaskButtons();
+                function createProjectTaskButtons () 
+                {
                 // project task buttons
                     let taskOptions = document.createElement('sl-button-group');
                     let addTask = document.createElement('sl-button');
-                    addTask.setAttribute("type", "success");
+                        addTask.setAttribute("type", "success");
                         addTask.addEventListener("click", function()
                         {
                         let taskName = window.prompt("Enter DAILY TASK", "My TASK");
@@ -304,15 +305,26 @@ function populateNavBar ()
                         addProjectItem(newTask); 
                         displayProject();
                         });
-                    addTask.textContent = "ADD TASK";
-                    addTask.id = "add-task";
+                        addTask.textContent = "ADD TASK";
+                        addTask.id = "add-task";
                     taskOptions.appendChild(addTask);
+
+                    let editTask = document.createElement('sl-button');
+                        editTask.setAttribute("type", "warning");
+                        editTask.textContent = "EDIT";
+                        editTask.id = "edit-task";
+                        editTask.addEventListener ("click", function editProjectTask()
+                        {
+                        // alterTask();
+                        alert('edit stuffs');
+                        });
+                    taskOptions.appendChild(editTask);
         
                     let removeTask = document.createElement('sl-button');
-                    removeTask.setAttribute("type", "danger");
-                    removeTask.textContent = "REMOVE TASK";
-                    removeTask.id = "remove-task";
-                    removeTask.addEventListener("click", function()
+                        removeTask.setAttribute("type", "danger");
+                        removeTask.textContent = "REMOVE TASK";
+                        removeTask.id = "remove-task";
+                        removeTask.addEventListener("click", function()
                         {
                         deleteProjectItem(selectedTask); 
                         displayProject();
@@ -320,7 +332,9 @@ function populateNavBar ()
                     taskOptions.appendChild(removeTask);
         
                     currentProject.appendChild(taskOptions);
-                    content.appendChild(currentProject);
+                } // project task buttons function end
+
+                content.appendChild(currentProject);
             }
         }  // end of heading display
 
