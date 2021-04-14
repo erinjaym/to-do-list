@@ -40,16 +40,30 @@ const navBarModule = (() => {
             let projectOptions = document.createElement('sl-button-group');
             let addProject = document.createElement('sl-button');
             addProject.setAttribute("type", "success");  
-            addProject.addEventListener("click", function()
+            addProject.addEventListener("click", function createNewProject()
                 {
                 let projectName = window.prompt("Project Name: ", "myproject"); // placeholder until UI is fully functional create stylized entry later
                 let projectDetails = window.prompt("Project Details:", "My details");
                 makeProject (projectName, projectDetails); //adds to project list
-                populateNavBar();       // puts back on nav bar
-                toggleProject(projectName); // puts on correct project to add stuff
-                selectedProject = projectName;
-                displayProject();
+            
+                    if (selectedProject != projectName)
+                    {
+                        let lastProjectSelection = document.getElementById(selectedProject); //exception for deleted items?? 
+                        lastProjectSelection.className = "active-project";
+                        toggleProject(projectName); // puts on correct project to add stuff
+                        selectedProject = projectName;
+                        displayProject();
+                        populateNavBar();       // puts on nav bar
 
+                    }
+                    else  //should be impossible
+                    {
+                        
+                        toggleProject(projectName); // puts on correct project to add stuff
+                        selectedProject = projectName;
+                        displayProject();
+                        populateNavBar();       // puts on nav bar
+                    }
                 });
             addProject.textContent = "ADD";
             addProject.id = "add-project";
@@ -61,12 +75,13 @@ const navBarModule = (() => {
             removeProject.id = "remove-project";
             removeProject.addEventListener("click", function()
                 {
-                let projectName = window.prompt("Enter Project NAME", "my deletion"); // placeholder until mouse selectors are added
-                // will need to clear display to Default display of tasks as well with displayProject();
+                let projectName = window.prompt("Enter Project NAME", "my deletion"); 
                 deleteProject (projectName); //deletets project ... need to add how to input
-                populateNavBar();
                 selectedProject = "Daily Tasks";
-                displayProject();  
+                let dailyRef = document.getElementById('Daily Tasks');
+                dailyRef.className = "active-project-active";
+                displayProject();
+                populateNavBar();
                 alert("Delete stuffs");
                 });
             projectOptions.appendChild(removeProject);
@@ -79,13 +94,27 @@ const navBarModule = (() => {
             activeProjects.id ="active-projects";
 
             let dailyProject = document.createElement('div'); // Daily Projects never leaves
-            dailyProject.className = "active-project";
+            dailyProject.className = "active-project-active";
             dailyProject.textContent = "Daily Tasks";
-            dailyProject.addEventListener('click', function (){
-                selectedProject = "Daily Tasks";
-                console.log(selectedProject);
-                displayProject();
-                // call displayProject()
+            let dailyProjectName = "Daily Tasks";
+            dailyProject.id = dailyProjectName;
+            dailyProject.addEventListener('click', function dailyActive()
+            {
+                if (selectedProject != dailyProjectName)
+                {
+                    let lastProjectSelection = document.getElementById(selectedProject); 
+                    lastProjectSelection.className = "active-project";
+
+                    selectedProject = dailyProjectName;
+                    dailyProject.className = "active-project-active";
+                    displayProject();
+                }
+                else
+                {
+                    dailyProject.className = "active-project-active";
+                    selectedProject = dailyProjectName;
+                    displayProject();
+                }
             });
             activeProjects.appendChild(dailyProject);
 
@@ -100,19 +129,43 @@ const navBarModule = (() => {
                     // add all projects from projectList array ito active projects container here
                 for (let currentProject = 0; currentProject <= projectsToDisplay.length-1; currentProject++)
                 {
-                    let projectName = projectsToDisplay[currentProject];
+                    let theProjectName = projectsToDisplay[currentProject];
                     let theProject = document.createElement('div');
-                    theProject.className = "active-project";
-                    theProject.textContent = projectName;
-                    theProject.id = projectName;
-                   //displayProject.addEventListener("click", function () {toggleProject(projectName)}); // pass project name to selector
-                    theProject.addEventListener('click', function ()
+
+                    if (selectedProject == theProjectName)
                     {
-                        selectedProject = projectName;
-                        console.log(selectedProject);
-                        displayProject();
+                        theProject.className = "active-project-active";
+                    }
+                    else 
+                    {
+                        theProject.className = "active-project";
+                    }
+
+                    theProject.textContent = theProjectName;
+                    theProject.id = theProjectName;
+                   //displayProject.addEventListener("click", function () {toggleProject(projectName)}); // pass project name to selector
+                    theProject.addEventListener('click', function projectActive()
+                    {
+                        if (selectedProject != theProjectName)
+                        {
+                            let lastProjectSelection = document.getElementById(selectedProject); //exception for deleted items?? 
+                            lastProjectSelection.className = "active-project";
+                            
+                            toggleProject(theProjectName); 
+                            selectedProject = theProjectName;
+                            theProject.className = "active-project-active";
+                            displayProject();
+                        }
+                        else
+                        {
+                            theProject.className = "active-project-active";
+                            toggleProject(theProjectName); 
+                            selectedProject = theProjectName;
+                            displayProject();
+                        }
 
                     });
+
                     activeProjects.appendChild(theProject);
                 }   
     }
@@ -424,11 +477,20 @@ function populateNavBar ()
 
 
         const clearDisplay = () =>
-        {
+        {   
+
             let projectHeader = document.getElementById('project-display');
-            let projectTasks = document.getElementById('task-list');
-            projectHeader.parentNode.removeChild(projectHeader); // issue?
-            projectTasks.parentNode.removeChild(projectTasks);
+            projectHeader.parentNode.removeChild(projectHeader); 
+
+            if (document.getElementById('task-container'))
+            {
+            let projectTasks = document.getElementById('task-container'); 
+            projectTasks.parentNode.removeChild(projectTasks); 
+            }
+            else
+            {
+                console.log('no tasks to remove');
+            }
         }
 
 
@@ -439,8 +501,7 @@ function populateNavBar ()
     function displayProject() // to add exception for when there are no projects left to delete that will just stay displaying daily
     {
 
-        
-        //projectMenuModule.clearDisplay(); // clear old project display
+        projectMenuModule.clearDisplay(); // clear old project display
         projectMenuModule.projectHeadingDisplay(); // display currently toggled project
         projectMenuModule.taskListDisplay(); // display currently toggled projects task list
     }
