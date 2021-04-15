@@ -205,6 +205,130 @@ function populateNavBar ()
 
     const projectMenuModule = (() => 
     {
+        // move top two functions to bottom as they are private parts of project module
+        function blurBackground () 
+        {
+            let nav = document.getElementById('navbar');
+            let projectInfo = document.getElementById('project-display'); 
+            let taskInfo = document.getElementById('task-container');
+                nav.className = "nav-container-blur"; 
+                taskInfo.className = "task-container-blur";
+                projectInfo.className = "project-name-display-blur";
+        }
+
+        function unBlurBackground () 
+        {
+            let nav = document.getElementById('navbar');
+            let projectInfo = document.getElementById('project-display'); 
+            let taskInfo = document.getElementById('task-container');
+                nav.className = "nav-container"; 
+                taskInfo.className = "task-container";
+                projectInfo.className = "project-name-display";
+        }
+                            const createDailyTaskWindowPopUp = () => 
+                            {
+                                
+                                let tasksEditPopup = document.createElement('div');
+                                    tasksEditPopup.id = "tasks-edit-popup";
+                                    tasksEditPopup.className = "tasks-edit-popup";
+                                let tasksName = document.createElement('div');    
+                                    tasksName.textContent = selectedProject;
+                                
+                                
+                                let tasksForm = document.createElement('form');
+                                    tasksForm.id = "tasks-edit-form";
+                                    tasksForm.className = "tasks-edit-form";
+                                    // Name Field
+                                    let tasksNameField = document.createElement('div'); 
+                                        tasksNameField.textContent = "Name: ";
+                                        let fieldSpacer = document.createElement('br');
+                                        tasksNameField.appendChild(fieldSpacer);
+                                        let tasksNameFieldInput = document.createElement('input');
+                                            tasksNameFieldInput.setAttribute("name", "name");
+                                            tasksNameFieldInput.setAttribute("type", "text");
+                                            tasksNameFieldInput.setAttribute("label", "name");
+                                    tasksNameField.appendChild(tasksNameFieldInput);
+                                tasksForm.appendChild(tasksNameField);
+                                    // Details field
+                                    let detailsFieldName = document.createElement('div'); 
+                                        detailsFieldName.textContent = "Details: ";
+                                        let fieldSpacer2 = document.createElement('br');
+                                        detailsFieldName.appendChild(fieldSpacer2);
+                                        let detailsField = document.createElement('textarea');
+                                            detailsField.setAttribute("label", "details");
+                                            detailsField.setAttribute("columns", "40");
+                                            detailsField.setAttribute("rows", "3");
+                                    detailsFieldName.appendChild(detailsField);
+                                tasksForm.appendChild(detailsFieldName);
+                                    // Priority Field
+                                    let prioritySelection = document.createElement('div');
+                                        let priorityFieldName = document.createElement('label');
+                                        priorityFieldName.setAttribute("for", "priority");
+                                        priorityFieldName.textContent = "Priority Select: ";
+                                            let fieldSpacer3 = document.createElement('br');
+                                        priorityFieldName.appendChild(fieldSpacer3);
+                                    prioritySelection.appendChild(priorityFieldName);
+
+                                        let priorityField = document.createElement('select');
+                                            priorityField.setAttribute("name", "priority");
+                                            priorityField.id = ("priority");
+                                                let lowOption = document.createElement('option');
+                                                    lowOption.setAttribute('value', 'LOW');
+                                                    lowOption.textContent = "LOW";
+                                                    priorityField.appendChild(lowOption);
+                                                let medOption = document.createElement('option');
+                                                    medOption.setAttribute('value', 'MED');
+                                                    medOption.textContent = "MED";
+                                                    priorityField.appendChild(medOption);
+                                                let highOption = document.createElement('option');
+                                                    highOption.setAttribute('value', 'HIGH');
+                                                    highOption.textContent = "HIGH";
+                                                    priorityField.appendChild(highOption);
+                                    prioritySelection.appendChild(priorityField);
+                                tasksForm.appendChild(prioritySelection);
+                                    // Completion Status
+                                    let completionStatus = document.createElement('div');
+                                        completionStatus.textContent = "Completion Status: ";
+                                        let fieldSpacer4 = document.createElement('br');
+                                        completionStatus.appendChild(fieldSpacer4);
+                                        let yesBox = document.createElement('input');
+                                            yesBox.setAttribute("type", "radio");
+                                            yesBox.setAttribute("name", "status");
+                                            yesBox.setAttribute("value", "yes");
+                                            yesBox.textContent = "YEP";
+                                        let noBox = document.createElement('input');
+                                            noBox.setAttribute("type", "radio");
+                                            noBox.setAttribute("name", "status");
+                                            noBox.setAttribute("value", "no");
+                                            noBox.textContent = "NOPE";
+                                    completionStatus.appendChild(yesBox);
+                                    completionStatus.appendChild(noBox);
+                                tasksForm.appendChild(completionStatus); 
+                                    //form Buttons attach to Tasks NAME FIELD 
+                                    let buttonSelection = document.createElement('div');
+                                        buttonSelection.style.marginLeft = "auto";
+                                        buttonSelection.style.marginRight = "0";
+                                    let submitButton = document.createElement('sl-button');
+                                        submitButton.textContent = "Submit Changes";
+                                        submitButton.setAttribute("type", "success");
+                                    buttonSelection.appendChild(submitButton);
+                                    let cancelButton = document.createElement('sl-button');
+                                        cancelButton.textContent = "Cancel";
+                                        cancelButton.setAttribute("type", "danger");
+                                        cancelButton.addEventListener("click", () => { unBlurBackground(); let taskPopUp = document.getElementById('tasks-edit-popup');
+                                            taskPopUp.style.display = "none"; });
+                                    buttonSelection.appendChild(cancelButton);
+                                    
+
+        
+        
+                                tasksName.appendChild(tasksForm); // append completed form to tasks name
+                                tasksName.appendChild(buttonSelection); // add buttons to window after form 
+                                tasksEditPopup.appendChild(tasksName); // append tasks name to popup window
+                                let body = document.getElementById('body'); //hide on body of html
+                                body.appendChild(tasksEditPopup); 
+                            }
+
 
         const projectHeadingDisplay = () =>
         {
@@ -219,39 +343,7 @@ function populateNavBar ()
                     projectTitle.textContent = "Daily Tasks";
                     currentProject.appendChild(projectTitle);
                     
-                    function blurBackground () // move this function to a different area? 
-                    {
-                        let nav = document.getElementById('navbar');
-                        let projectInfo = document.getElementById('project-display'); 
-                        let taskInfo = document.getElementById('task-container');// navbar // project-display //task-container ?? 
-                            nav.className = "nav-container-blur"; 
-                            taskInfo.className = "task-container-blur";
-                            projectInfo.className = "project-name-display-blur";
-                    }
                         
-
-                    function createEditTaskWindowPopUp() // change to create editTask POP up here using html template
-                    {
-                        
-                        let taskWindow = document.createElement('sl-dialog');
-                            taskWindow.setAttribute("label", "Task Edit");  // edit display name later ? 
-                            taskWindow.textContent = 'Read and click stuff here';
-                            taskWindow.className = "task-window";
-                        // taskWindow.id = "edit-task-window";
-                        let submitButton = document.createElement('sl-button');
-                            submitButton.textContent = 'Submit Changes';
-                            submitButton.setAttribute("type", "primary");
-                            submitButton.setAttribute("slot", "footer");
-                            taskWindow.appendChild(submitButton);
-                        let theCloseButton = document.createElement('sl-button');
-                            theCloseButton.setAttribute("slot", "footer");
-                            theCloseButton.textContent = 'Cancel';
-                            theCloseButton.setAttribute('type', "danger");
-                            theCloseButton.addEventListener('click', () => document.querySelector("sl-dialog").hide() );
-                            taskWindow.appendChild(theCloseButton);
-                            
-                            content.appendChild(taskWindow); 
-                    }
 
 
 
@@ -607,9 +699,9 @@ function populateNavBar ()
         }
 
 
-        return {projectHeadingDisplay, taskListDisplay, clearDisplay}
+        return {projectHeadingDisplay, taskListDisplay, clearDisplay, createDailyTaskWindowPopUp}
 
-    }) ();
+    }) (); //end of 
 
     function displayProject() // to add exception for when there are no projects left to delete that will just stay displaying daily
     {
@@ -619,6 +711,7 @@ function populateNavBar ()
         projectMenuModule.taskListDisplay(); // display currently toggled projects task list
     }
 
+projectMenuModule.createDailyTaskWindowPopUp(); // create hidden task window on load 
 projectMenuModule.projectHeadingDisplay(); // initial display
 //projectMenuModule.taskListDisplay();    // initial display
 
