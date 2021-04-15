@@ -5,6 +5,38 @@
     <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.37/dist/shoelace.js"></script>
     <body>
         <div id="content" class=""></div>
+
+<div class="tasks-edit-popup" id="tasks-edit-popup">
+    <div id="task-name">Task Name</div>
+        <form class="tasks-edit-form">
+            <div>Name:<br>
+            <input name="name" type="text" label="Name"></input><br></div>
+            <div>Details:<br>
+            <textarea rows="3"; cols="40"></textarea>
+            </input></div>
+            <div>
+            <label for="priority">Priority Select:</label><br>
+            <select name="priority" id="priority">
+              <option value="LOW">LOW</option>
+              <option value="MED">MED</option>
+              <option value="HIGH">HIGH</option>
+            </select>
+            </div>
+            <div>
+                Completion Status:<br>
+                <sl-checkbox name="status" value="yes">
+                    YEP
+                </sl-checkbox>
+                <sl-checkbox name="status" value="no">
+                    NOPE
+                </sl-checkbox>
+            </div>
+        </form>
+        <div id="tasks-edit-buttons" style="margin-left: auto; margin-right: 0;"><sl-button type="success">Submit</sl-button><sl-button type="danger">Cancel</sl-button></div>
+
+</div>
+
+        
     </body>
 </div>
     <script src="main.js"></script>

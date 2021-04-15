@@ -202,7 +202,7 @@ function populateNavBar ()
 
 
 
- // turn createTaskList into module
+
     const projectMenuModule = (() => 
     {
 
@@ -218,6 +218,42 @@ function populateNavBar ()
                     let projectTitle = document.createElement("div");
                     projectTitle.textContent = "Daily Tasks";
                     currentProject.appendChild(projectTitle);
+                    
+                    function blurBackground () // move this function to a different area? 
+                    {
+                        let nav = document.getElementById('navbar');
+                        let projectInfo = document.getElementById('project-display'); 
+                        let taskInfo = document.getElementById('task-container');// navbar // project-display //task-container ?? 
+                            nav.className = "nav-container-blur"; 
+                            taskInfo.className = "task-container-blur";
+                            projectInfo.className = "project-name-display-blur";
+                    }
+                        
+
+                    function createEditTaskWindowPopUp() // change to create editTask POP up here using html template
+                    {
+                        
+                        let taskWindow = document.createElement('sl-dialog');
+                            taskWindow.setAttribute("label", "Task Edit");  // edit display name later ? 
+                            taskWindow.textContent = 'Read and click stuff here';
+                            taskWindow.className = "task-window";
+                        // taskWindow.id = "edit-task-window";
+                        let submitButton = document.createElement('sl-button');
+                            submitButton.textContent = 'Submit Changes';
+                            submitButton.setAttribute("type", "primary");
+                            submitButton.setAttribute("slot", "footer");
+                            taskWindow.appendChild(submitButton);
+                        let theCloseButton = document.createElement('sl-button');
+                            theCloseButton.setAttribute("slot", "footer");
+                            theCloseButton.textContent = 'Cancel';
+                            theCloseButton.setAttribute('type', "danger");
+                            theCloseButton.addEventListener('click', () => document.querySelector("sl-dialog").hide() );
+                            taskWindow.appendChild(theCloseButton);
+                            
+                            content.appendChild(taskWindow); 
+                    }
+
+
 
                 createDailyTaskButtons();
                 function createDailyTaskButtons () // populate daily task buttons
@@ -242,10 +278,10 @@ function populateNavBar ()
                         editTask.setAttribute("type", "warning");
                         editTask.textContent = "EDIT";
                         editTask.id = "edit-task";
-                        editTask.addEventListener ("click", function editProjectTask()
-                            {
-                            // alterTask();
-                            alert('edit stuffs');
+                        editTask.addEventListener ("click", () => {
+                            let taskPopUp = document.getElementById('tasks-edit-popup');
+                            taskPopUp.style.display = "grid";
+                            blurBackground ();
                             });
                     taskOptions.appendChild(editTask);
 
@@ -313,11 +349,9 @@ function populateNavBar ()
                         editTask.setAttribute("type", "warning");
                         editTask.textContent = "EDIT";
                         editTask.id = "edit-task";
-                        editTask.addEventListener ("click", function editProjectTask()
-                        {
-                        // alterTask();
-                        alert('edit stuffs');
-                        });
+                        editTask.addEventListener ("click", function()
+                        {alert('stuff happens');
+                        }); // need to edit to make up for fact dialog isnt here
                     taskOptions.appendChild(editTask);
         
                     let removeTask = document.createElement('sl-button');
@@ -552,24 +586,6 @@ function populateNavBar ()
 
             } // end of else statement for project task display
         } // end of taskListDisplay
-
-        const alterTask = () =>
-        {
-            let taskWindow = document.createElement('sl-dialog');
-            taskWindow.setAttribute("label", "Dialog");
-            taskWindow.textContent('Read and click stuff here');
-            taskWindow.className = "dialog-overview";
-            // taskWindow.id = "edit-task-window";
-            let closeButton = document.createElement('sl-button');
-            closeButton.setAttribute('slot', "footer");
-            closeButton.textContent = 'CLOSE';
-            closeButton.setAttribute('type', "danger");
-            taskWindow.appendChild('closeButton');
-
-            content.appendChild();
-
-        }
-
 
 
 

@@ -22,6 +22,24 @@
     width:250px;
   }
 
+  .nav-container-blur
+  {
+    align-items: center;
+    background: hsl(0, 50%, 85%);
+    border-color:rgba(240, 0, 0, 0.4);
+    border-right:solid;
+    border-color:rgba(240, 0, 0, 0.4);
+    display: flex; 
+    filter: blur(2px);
+    flex-direction: column;
+    height:100%;
+    left:0px;
+    position:fixed;
+    top:0px;
+    width:250px;
+    -webkit-filter: blur(2px);
+  }
+
 .nav-header
 {
     border-bottom:solid;
@@ -97,6 +115,22 @@
     top: 120px;
 }
 
+.task-container-blur
+{
+    background:hsl(0, 50%, 96%);
+    bottom: 0px;
+    display: flex; 
+    flex-direction: column;
+    height: auto;
+    left: 253px;
+    right: 0px;
+    padding: 10px 50px 0px; 
+    position: fixed; 
+    top: 120px;
+    filter: blur(2px);
+    -webkit-filter: blur(2px);
+}
+
 .project-name-display
 {
   align-items: flex-end;
@@ -119,11 +153,34 @@
   top: 0px;
 }
 
+.project-name-display-blur
+{
+  align-items: flex-end;
+  background:hsla(0, 50%, 85%, 0.5);
+  color: rgba(240, 0, 0, 0.6);
+  display: flex; 
+  font-size: 2.5em;
+  font-weight: bold;
+  flex-direction: row;
+  gap: 30px;
+  height: 120px;
+  left: 253px;
+  right: 0px;
+  padding-left: 30px;
+  position: fixed;
+  text-shadow: -1px 1px 1px #fff,
+    1px 1px 1px #fff,
+    1px -1px 0px #fff,
+    -1px -1px 0px #fff;
+  top: 0px;
+  filter: blur(2px);
+  -webkit-filter: blur(2px);
+}
+
 .table-header
 {
   background-color: red;
   border-color: red;
-  broder: solid 1px;
 }
 
 .task-table
@@ -150,10 +207,40 @@ td
 {
 
 }
-
-.edit-task-window
+.tasks-edit-form
 {
+border-radius: 1%;
+border-top: solid 2px red;
+display: grid;
+grid-template-rows: 1fr;
+grid-template-columns: 1fr 1fr;
+grid-column-gap: 20px;
+font-weight: bold;
+background-color: rgb(252, 249, 249);
+padding: 5px;
+position: relative;
+}
 
+.tasks-edit-popup
+{
+  border-radius: 2%;
+  background-color: rgb(252, 249, 249);
+  display: none;
+  font-size: 1.1em;
+  font-weight: bold;
+  row-gap: 5px;
+  grid-template-rows: .5fr 1fr .5fr;
+  grid-template-columns: 1fr;
+  padding: 10px;;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  width: 700px;
+  height: 200px;
+  transform: translate(-50%, -50%);
+}
 
-
+.is-blurred { 
+  filter: blur(2px);
+  -webkit-filter: blur(2px);
 }
