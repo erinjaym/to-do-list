@@ -29,5 +29,22 @@ function addDaily (dailyItem) // may need to run a check to see if Name exists f
     dailyProjectsList.push(dailyItem);
 }
 
+function findDailyTask (dailyName)
+{
+    for (let itemSpot = 0; itemSpot <= dailyProjectsList.length-1; itemSpot++)
+    {
+        if(dailyProjectsList[itemSpot].dailyName == dailyName)
+        {
+            let dailyItem = dailyProjectsList[itemSpot];
+            return dailyItem;
 
-export {addDaily, deleteDaily, displayDailyProjects};
+        }
+        else
+        {
+            console.log("couldnt find it");
+        }
+    }
+}
+
+
+export {addDaily, deleteDaily, displayDailyProjects, findDailyTask};

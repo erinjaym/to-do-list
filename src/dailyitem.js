@@ -2,7 +2,7 @@
 let dailyItemMaker = (nameEntry, detailEntry, priorityEntry) => {
     let dailyName = nameEntry;
     let detail = detailEntry;
-    let completed = false;
+    let completed = "NOPE";
     let priority = priorityEntry;
     function sayName () {  // use for selection methods later ?? 
         return this.dailyName;
@@ -13,20 +13,11 @@ let dailyItemMaker = (nameEntry, detailEntry, priorityEntry) => {
     return {dailyName, detail, completed, priority, info, sayName};
 };
 
-function toggleDailyComplete (dailyItem) // check or uncheck Item
+function toggleDailyComplete (dailyItem, status) // check or uncheck Item
 { 
-    if (dailyItem.completed)
-    {
-    console.log(dailyItem.completed);
-    dailyItem.completed = false; 
-    return console.log("changed it to falst")
-    }
-    else if (dailyItem.completed == false)
-    {
-    console.log("Make true");
-    dailyItem.completed = true; 
-    return console.log("changed It to true"); 
-    }
+    dailyItem.completed = status;
+    let check = dailyItem.completed;
+     console.log('Changed TO :' + check);
 }
 
 function toggleDailyPriority (dailyItem, priorityEntry) // need to make basecases for no entry and exceptions?  

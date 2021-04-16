@@ -1,6 +1,6 @@
 import {getCurrentProjectTaskList, getProjectNames, makeProject, deleteProject, toggleProject, getCurrentProjectName, getProjects, addProjectItem, deleteProjectItem} from './projects';
 import {makeProjectItem, toggleComplete, togglePriority, changeDetail, changeName} from './projectitem.js';
-import {displayDailyProjects, addDaily, deleteDaily} from './dailyprojects'; 
+import {displayDailyProjects, addDaily, deleteDaily, findDailyTask} from './dailyprojects'; 
 import {makeDailyItem, toggleDailyComplete, toggleDailyPriority, changeDailyDetail, changeDailyName} from './dailyitem';
 
 let projectsToDisplay = getProjectNames(); 
@@ -228,6 +228,9 @@ function populateNavBar ()
                             const createDailyTaskWindowPopUp = () => 
                             {
                                 
+                                let taskToEdit = findDailyTask(selectedTask); // daily item to change
+                                
+                                
                                 let tasksEditPopup = document.createElement('div');
                                     tasksEditPopup.id = "tasks-edit-popup";
                                     tasksEditPopup.className = "tasks-edit-popup";
@@ -244,7 +247,9 @@ function populateNavBar ()
                                         let fieldSpacer = document.createElement('br');
                                         tasksNameField.appendChild(fieldSpacer);
                                         let tasksNameFieldInput = document.createElement('input');
+                                            tasksNameFieldInput.id = "taskName";
                                             tasksNameFieldInput.setAttribute("name", "name");
+                                            tasksNameFieldInput.setAttribute("value", taskToEdit.dailyName); /// fills from selected task
                                             tasksNameFieldInput.setAttribute("type", "text");
                                             tasksNameFieldInput.setAttribute("label", "name");
                                     tasksNameField.appendChild(tasksNameFieldInput);
@@ -255,8 +260,10 @@ function populateNavBar ()
                                         let fieldSpacer2 = document.createElement('br');
                                         detailsFieldName.appendChild(fieldSpacer2);
                                         let detailsField = document.createElement('textarea');
+                                            detailsField.id = "taskDetails";
+                                            detailsField.textContent = taskToEdit.detail;
                                             detailsField.setAttribute("label", "details");
-                                            detailsField.setAttribute("columns", "40");
+                                            detailsField.setAttribute("columns", "50");
                                             detailsField.setAttribute("rows", "3");
                                     detailsFieldName.appendChild(detailsField);
                                 tasksForm.appendChild(detailsFieldName);
@@ -273,16 +280,16 @@ function populateNavBar ()
                                             priorityField.setAttribute("name", "priority");
                                             priorityField.id = ("priority");
                                                 let lowOption = document.createElement('option');
-                                                    lowOption.setAttribute('value', 'LOW');
-                                                    lowOption.textContent = "LOW";
+                                                    lowOption.setAttribute('value', 'Low');
+                                                    lowOption.textContent = "Low";
                                                     priorityField.appendChild(lowOption);
                                                 let medOption = document.createElement('option');
-                                                    medOption.setAttribute('value', 'MED');
-                                                    medOption.textContent = "MED";
+                                                    medOption.setAttribute('value', 'Med');
+                                                    medOption.textContent = "Med";
                                                     priorityField.appendChild(medOption);
                                                 let highOption = document.createElement('option');
-                                                    highOption.setAttribute('value', 'HIGH');
-                                                    highOption.textContent = "HIGH";
+                                                    highOption.setAttribute('value', 'High');
+                                                    highOption.textContent = "High";
                                                     priorityField.appendChild(highOption);
                                     prioritySelection.appendChild(priorityField);
                                 tasksForm.appendChild(prioritySelection);
@@ -292,16 +299,28 @@ function populateNavBar ()
                                         let fieldSpacer4 = document.createElement('br');
                                         completionStatus.appendChild(fieldSpacer4);
                                         let yesBox = document.createElement('input');
+                                            yesBox.id = "YEP";
                                             yesBox.setAttribute("type", "radio");
                                             yesBox.setAttribute("name", "status");
                                             yesBox.setAttribute("value", "yes");
-                                            yesBox.textContent = "YEP";
                                         let noBox = document.createElement('input');
+                                            noBox.id = "NOPE";
                                             noBox.setAttribute("type", "radio");
                                             noBox.setAttribute("name", "status");
                                             noBox.setAttribute("value", "no");
-                                            noBox.textContent = "NOPE";
+                                        let yesBoxText = document.createElement('span');
+                                            yesBoxText.textContent = "YEP";
+                                            yesBoxText.style.fontSize = "large";
+                                            yesBoxText.style.fontWeight = "normal";
+                                            yesBoxText.style.color = "green";
+                                    completionStatus.appendChild(yesBoxText);
                                     completionStatus.appendChild(yesBox);
+                                        let noBoxText = document.createElement('span');
+                                            noBoxText.textContent = "NOPE";
+                                            noBoxText.style.fontSize = "large";
+                                            noBoxText.style.fontWeight = "normal";
+                                            noBoxText.style.color = "red";
+                                    completionStatus.appendChild(noBoxText);
                                     completionStatus.appendChild(noBox);
                                 tasksForm.appendChild(completionStatus); 
                                     //form Buttons attach to Tasks NAME FIELD 
@@ -311,22 +330,98 @@ function populateNavBar ()
                                     let submitButton = document.createElement('sl-button');
                                         submitButton.textContent = "Submit Changes";
                                         submitButton.setAttribute("type", "success");
+                                        submitButton.addEventListener("click", () => 
+                                        { 
+                                            saveChanges();
+                                            function saveChanges() 
+                                                {
+                                                let newName = document.getElementById("taskName").value;
+                                                let newDetail = document.getElementById("taskDetails").value;
+                                                let newPriority = document.getElementById("priority").value;
+                                                let newCompleted = "MAYBE";
+                                                    if (document.getElementById('YEP').checked)
+                                                    {
+                                                        newCompleted = "YEP";
+                                                    }
+                                                    else
+                                                    {
+                                                        newCompleted = "NOPE";
+                                                    }
+
+                                                changeDailyName(taskToEdit, newName);
+                                                changeDailyDetail (taskToEdit, newDetail);
+                                                toggleDailyPriority (taskToEdit, newPriority);
+                                                toggleDailyComplete(taskToEdit, newCompleted);
+                                                }
+                                            
+                                            unBlurBackground(); 
+                                            displayProject(); // refresh screen
+                                            let taskPopUp = document.getElementById('tasks-edit-popup'); 
+                                            taskPopUp.parentNode.removeChild(taskPopUp); // remove window 
+                                        });
+
                                     buttonSelection.appendChild(submitButton);
                                     let cancelButton = document.createElement('sl-button');
                                         cancelButton.textContent = "Cancel";
                                         cancelButton.setAttribute("type", "danger");
                                         cancelButton.addEventListener("click", () => { unBlurBackground(); let taskPopUp = document.getElementById('tasks-edit-popup');
-                                            taskPopUp.style.display = "none"; });
+                                            taskPopUp.parentNode.removeChild(taskPopUp); });
                                     buttonSelection.appendChild(cancelButton);
                                     
 
         
-        
-                                tasksName.appendChild(tasksForm); // append completed form to tasks name
-                                tasksName.appendChild(buttonSelection); // add buttons to window after form 
-                                tasksEditPopup.appendChild(tasksName); // append tasks name to popup window
+                                    tasksEditPopup.appendChild(tasksName); // append tasks name to popup window
+                                    tasksEditPopup.appendChild(tasksForm); // append completed form to pop window after name
+                                    tasksEditPopup.appendChild(buttonSelection); // add buttons to window after form 
+                        
                                 let body = document.getElementById('body'); //hide on body of html
                                 body.appendChild(tasksEditPopup); 
+
+                                setCompleted();
+                                function setCompleted () //  checks appropriiate radio button based saved task value
+                                {
+                                    let completed = taskToEdit.completed;
+                                    console.log(completed);
+                                    if (completed == "yes")
+                                    {
+                                        let yes = document.getElementById('YEP');
+                                        yes.checked = "true";
+                                    }
+                                    else 
+                                    {
+                                        let no = document.getElementById('NOPE');
+                                        no.checked = "true";
+                                    }
+
+                                }
+
+                                // sets priority pop up to saved task value
+                                setPriority();
+                                    function setPriority ()
+                                    {
+                                        console.log(taskToEdit.priority);
+                                        let priorityDefault = document.getElementById("priority");
+                                        if (taskToEdit.priority === "Low")
+                                        {
+                                            priorityDefault.selectedIndex = "0";
+                                            console.log('did low');
+                                        }
+                                        else if (taskToEdit.priority === "Med")
+                                        {
+                                            priorityDefault.selectedIndex = "1";
+                                            console.log('did med');
+                                        }
+                                        else if (taskToEdit.priority === "High")
+                                        {
+                                            priorityDefault.selectedIndex = "2";
+                                            console.log('did high');
+                                        }
+                                        else {
+                                            console.log('you suck!');
+                                        }
+                
+                                    }
+
                             }
 
 
@@ -371,6 +466,7 @@ function populateNavBar ()
                         editTask.textContent = "EDIT";
                         editTask.id = "edit-task";
                         editTask.addEventListener ("click", () => {
+                            createDailyTaskWindowPopUp();
                             let taskPopUp = document.getElementById('tasks-edit-popup');
                             taskPopUp.style.display = "grid";
                             blurBackground ();
@@ -711,7 +807,7 @@ function populateNavBar ()
         projectMenuModule.taskListDisplay(); // display currently toggled projects task list
     }
 
-projectMenuModule.createDailyTaskWindowPopUp(); // create hidden task window on load 
+
 projectMenuModule.projectHeadingDisplay(); // initial display
 //projectMenuModule.taskListDisplay();    // initial display
 
