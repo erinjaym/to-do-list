@@ -37,7 +37,6 @@ function findDailyTask (dailyName)
         {
             let dailyItem = dailyProjectsList[itemSpot];
             return dailyItem;
-
         }
         else
         {

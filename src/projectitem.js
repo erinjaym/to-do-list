@@ -1,7 +1,7 @@
 let projectItemMaker = (nameEntry, detailEntry, priorityEntry, dueDateEntry) => {
     let projectItemName = nameEntry;
     let detail = detailEntry;
-    let completed = false;
+    let completed = "NOPE";
     let priority = priorityEntry;
     let dueDate = "10/10";
 
@@ -13,20 +13,10 @@ let projectItemMaker = (nameEntry, detailEntry, priorityEntry, dueDateEntry) => 
 
 
 
-function toggleComplete (projectItem) // check or uncheck Item
+function toggleComplete (projectItem, status) // check or uncheck Item
 { 
-    if (projectItem.completed)
-    {
-    console.log(projectItem.completed);
-    projectItem.completed = false; 
-    return console.log("changed it to false")
-    }
-    else if (projectItem.completed == false)
-    {
-    console.log("Make true");
-    projectItem.completed = true; 
-    return console.log("changed It to true"); 
-    }
+    projectItem.completed = status;
+    return console.log('changed status');
 }
 
 

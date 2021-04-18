@@ -240,6 +240,39 @@ position: relative;
   transform: translate(-50%, -50%);
 }
 
+.project-tasks-popup
+{
+  border-radius: 2%;
+  background-color: rgb(252, 249, 249);
+  display: none;
+  font-size: 1.1em;
+  font-weight: bold;
+  row-gap: 5px;
+  grid-template-rows: .5fr 1fr .5fr;
+  grid-template-columns: 1fr;
+  padding: 10px;;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  width: 700px;
+  height: 200px;
+  transform: translate(-50%, -50%);
+}
+
+.project-tasks-edit-form
+{
+border-radius: 1%;
+border-top: solid 2px red;
+display: grid;
+grid-template-rows: 1fr;
+grid-template-columns: 1fr 1fr;
+grid-column-gap: 20px;
+font-weight: bold;
+background-color: rgb(252, 249, 249);
+padding: 5px;
+position: relative;
+}
+
 .is-blurred { 
   filter: blur(2px);
   -webkit-filter: blur(2px);

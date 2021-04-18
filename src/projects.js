@@ -82,7 +82,6 @@ function makeProject (nameEntry, descriptionEntry) // may need to run a check to
 
 function addProjectItem (projectItem)  // NEED TO ADD FOR IF THERE IS NO CURRENTLY SELECTED LIST! / nothing yet?
 {
-
     currentProjectTasks.push(projectItem);
 }
 
@@ -134,4 +133,22 @@ function deleteProjectItem (projectItemName) // searches through current project
     return console.log('did what could be done');
 }
 
-export {getProjectNames, getCurrentProjectTaskList, getCurrentProjectName, makeProject, addProjectItem, deleteProject, getProjects, toggleProject, displayCurrentProject, deleteProjectItem};
+function findProjectItem (projectItemName) // searches through current projects list to delete
+{
+    for (let findName = 0; findName <= currentProjectTasks.length-1; findName ++)
+    {
+        if (currentProjectTasks[findName].projectItemName == projectItemName)
+        {
+            return currentProjectTasks[findName];
+        }
+        else
+        {
+            console.log('no match');
+        }
+    }
+
+    return console.log('did what could be done');
+}
+
+
+export {findProjectItem, getProjectNames, getCurrentProjectTaskList, getCurrentProjectName, makeProject, addProjectItem, deleteProject, getProjects, toggleProject, displayCurrentProject, deleteProjectItem};
