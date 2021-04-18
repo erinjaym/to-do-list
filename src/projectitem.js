@@ -3,7 +3,7 @@ let projectItemMaker = (nameEntry, detailEntry, priorityEntry, dueDateEntry) => 
     let detail = detailEntry;
     let completed = "NOPE";
     let priority = priorityEntry;
-    let dueDate = "10/10";
+    let dueDate = "10/10/2021";
 
     function info() { 
         console.log("Item Info: " + this.projectItemName + " " + this.detail + " " + this.completed + " " + this.priority);
@@ -43,6 +43,12 @@ function changeName (projectItem, newName) // need to make basecases for no entr
     return console.log("Changed Name to " + projectItem.projetItemName);
 } 
 
+function changeDueDate (projectItem, newDate)
+{
+    projectItem.dueDate = newDate;
+    return console.log("Date Changed to :" + projectItem.dueDate);
+}
+
 function makeProjectItem (name, detail, priority) 
     {
     let item = projectItemMaker(name, detail, priority);
@@ -57,4 +63,4 @@ function selectDueDate (userInput)
    let dueDate = userInput; 
 }
 
-export {makeProjectItem, toggleComplete, togglePriority, changeDetail, changeName};
+export {makeProjectItem, toggleComplete, togglePriority, changeDetail, changeName, changeDueDate};

@@ -1,5 +1,5 @@
 import {findProjectItem, getCurrentProjectTaskList, getProjectNames, makeProject, deleteProject, toggleProject, getCurrentProjectName, getProjects, addProjectItem, deleteProjectItem} from './projects';
-import {makeProjectItem, toggleComplete, togglePriority, changeDetail, changeName} from './projectitem.js';
+import {makeProjectItem, toggleComplete, togglePriority, changeDetail, changeName, changeDueDate} from './projectitem.js';
 import {displayDailyProjects, addDaily, deleteDaily, findDailyTask} from './dailyprojects'; 
 import {makeDailyItem, toggleDailyComplete, toggleDailyPriority, changeDailyDetail, changeDailyName} from './dailyitem';
 
@@ -522,7 +522,22 @@ function populateNavBar ()
                                             noBoxText.style.color = "red";
                                     completionStatus.appendChild(noBoxText);
                                     completionStatus.appendChild(noBox);
-                                tasksForm.appendChild(completionStatus); 
+                                tasksForm.appendChild(completionStatus);
+                                    
+                                        let dueDate = document.createElement('div');
+                                        dueDate.textContent = "Due Date: ";
+                                        let fieldSpacer5 = document.createElement('br');
+                                        dueDate.appendChild(fieldSpacer5);
+                                        let dueDateDisplay = document.createElement('input');
+                                        dueDateDisplay.id = "dueDate";
+                                        dueDateDisplay.setAttribute("type", "text");
+                                        dueDateDisplay.setAttribute("name", "due-date");
+                                        dueDateDisplay.setAttribute("label", "due-date");
+                                        dueDateDisplay.setAttribute("value", taskToEdit.dueDate);
+                                        dueDate.appendChild(dueDateDisplay);
+                                    tasksForm.appendChild(dueDate);
+                                
+
                                     //form Buttons attach to Tasks NAME FIELD 
                                     let buttonSelection = document.createElement('div');
                                         buttonSelection.style.marginLeft = "auto";
@@ -538,6 +553,7 @@ function populateNavBar ()
                                                 let newName = document.getElementById("taskName").value;
                                                 let newDetail = document.getElementById("taskDetails").value;
                                                 let newPriority = document.getElementById("priority").value;
+                                                let newDate = document.getElementById("dueDate").value;
                                                 let newCompleted = "MAYBE";
                                                     if (document.getElementById('YEP').checked)
                                                     {
@@ -552,6 +568,7 @@ function populateNavBar ()
                                                 changeDetail (taskToEdit, newDetail); 
                                                 togglePriority (taskToEdit, newPriority); 
                                                 toggleComplete(taskToEdit, newCompleted); 
+                                                changeDueDate(taskToEdit, newDate);
                                                 }
                                             
                                             unBlurBackground(); 
