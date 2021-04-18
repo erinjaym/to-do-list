@@ -181,6 +181,8 @@
 {
   background-color: red;
   border-color: red;
+  font-weight: bold;
+  text-align: left;
 }
 
 .task-table

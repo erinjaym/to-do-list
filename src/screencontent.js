@@ -225,7 +225,134 @@ function populateNavBar ()
                 taskInfo.className = "task-container";
                 projectInfo.className = "project-name-display";
         }
-                            const createDailyTaskWindowPopUp = () => 
+
+        const createDailyTaskWindow = () => 
+        {            
+            let tasksEditPopup = document.createElement('div');
+                tasksEditPopup.id = "tasks-edit-popup";
+                tasksEditPopup.className = "tasks-edit-popup";
+            let tasksName = document.createElement('div');    
+                tasksName.textContent = selectedProject;
+            
+            
+            let tasksForm = document.createElement('form');
+                tasksForm.id = "tasks-edit-form";
+                tasksForm.className = "tasks-edit-form";
+                // Name Field
+                let tasksNameField = document.createElement('div'); 
+                    tasksNameField.textContent = "Task Name: ";
+                    let fieldSpacer = document.createElement('br');
+                    tasksNameField.appendChild(fieldSpacer);
+                    let tasksNameFieldInput = document.createElement('input');
+                        tasksNameFieldInput.id = "taskName";
+                        tasksNameFieldInput.setAttribute("name", "name");
+                        tasksNameFieldInput.setAttribute("value", "Enter Task Name"); /// fills from selected task
+                        tasksNameFieldInput.setAttribute("type", "text");
+                        tasksNameFieldInput.setAttribute("label", "name");
+                tasksNameField.appendChild(tasksNameFieldInput);
+            tasksForm.appendChild(tasksNameField);
+                // Details field
+                let detailsFieldName = document.createElement('div'); 
+                    detailsFieldName.textContent = "Details: ";
+                    let fieldSpacer2 = document.createElement('br');
+                    detailsFieldName.appendChild(fieldSpacer2);
+                    let detailsField = document.createElement('textarea');
+                        detailsField.id = "taskDetails";
+                        detailsField.textContent = "Task Details";
+                        detailsField.setAttribute("label", "details");
+                        detailsField.setAttribute("columns", "50");
+                        detailsField.setAttribute("rows", "3");
+                detailsFieldName.appendChild(detailsField);
+            tasksForm.appendChild(detailsFieldName);
+                // Priority Field
+                let prioritySelection = document.createElement('div');
+                    let priorityFieldName = document.createElement('label');
+                    priorityFieldName.setAttribute("for", "priority");
+                    priorityFieldName.textContent = "Priority Select: ";
+                        let fieldSpacer3 = document.createElement('br');
+                    priorityFieldName.appendChild(fieldSpacer3);
+                prioritySelection.appendChild(priorityFieldName);
+
+                    let priorityField = document.createElement('select');
+                        priorityField.setAttribute("name", "priority");
+                        priorityField.id = ("priority");
+                            let lowOption = document.createElement('option');
+                                lowOption.setAttribute('value', 'Low');
+                                lowOption.textContent = "Low";
+                                priorityField.appendChild(lowOption);
+                            let medOption = document.createElement('option');
+                                medOption.setAttribute('value', 'Med');
+                                medOption.textContent = "Med";
+                                priorityField.appendChild(medOption);
+                            let highOption = document.createElement('option');
+                                highOption.setAttribute('value', 'High');
+                                highOption.textContent = "High";
+                                priorityField.appendChild(highOption);
+                prioritySelection.appendChild(priorityField);
+            tasksForm.appendChild(prioritySelection);
+            // add completion status spacer
+                let completionSpacer = document.createElement('div');
+                completionSpacer.textContent = "Completion Status: ";
+                let newItemMessage = document.createElement('br');
+                completionSpacer.appendChild(newItemMessage);
+                    let noBoxText = document.createElement('span');
+                    noBoxText.textContent = "NEW ITEM: NOT COMPLETED";
+                    noBoxText.style.fontSize = "large";
+                    noBoxText.style.fontWeight = "normal";
+                    noBoxText.style.color = "green";
+            completionSpacer.appendChild(noBoxText);
+
+
+                tasksForm.appendChild(completionSpacer);
+                //form Buttons attach to Tasks NAME FIELD 
+                let buttonSelection = document.createElement('div');
+                    buttonSelection.style.marginLeft = "auto";
+                    buttonSelection.style.marginRight = "0";
+                let submitButton = document.createElement('sl-button');
+                    submitButton.textContent = "Submit Changes";
+                    submitButton.setAttribute("type", "success");
+                    submitButton.addEventListener("click", () => 
+                    { 
+                        saveChanges();
+                        function saveChanges() 
+                            {
+                            let newName = document.getElementById("taskName").value;
+                            let newDetail = document.getElementById("taskDetails").value;
+                            let newPriority = document.getElementById("priority").value;
+                            let newDailyTask = makeDailyItem (newName, newDetail, newPriority); 
+                            addDaily(newDailyTask);
+                            }
+                        
+                        unBlurBackground(); 
+                        displayProject(); // refresh screen
+                        let taskPopUp = document.getElementById('tasks-edit-popup'); 
+                        taskPopUp.parentNode.removeChild(taskPopUp); // remove window 
+                    }); // end of submit button event listener
+
+                buttonSelection.appendChild(submitButton);
+                let cancelButton = document.createElement('sl-button');
+                    cancelButton.textContent = "Cancel";
+                    cancelButton.setAttribute("type", "danger");
+                    cancelButton.addEventListener("click", () => { unBlurBackground(); let taskPopUp = document.getElementById('tasks-edit-popup');
+                        taskPopUp.parentNode.removeChild(taskPopUp); });
+                buttonSelection.appendChild(cancelButton);
+                
+
+
+                tasksEditPopup.appendChild(tasksName); // append tasks name to popup window
+                tasksEditPopup.appendChild(tasksForm); // append completed form to pop window after name
+                tasksEditPopup.appendChild(buttonSelection); // add buttons to window after form 
+    
+            let body = document.getElementById('body'); //hide on body of html
+            body.appendChild(tasksEditPopup); 
+
+        } // end of createDailyTaskWindow
+
+
+
+
+
+                            const editDailyTaskWindow = () => 
                             {
                                 
                                 let taskToEdit = findDailyTask(selectedTask); // daily item to change
@@ -422,7 +549,7 @@ function populateNavBar ()
                 
                                     }
 
-                            } // end of dailyTaskWindowPopUp
+                            } // end of dailyTaskWindow
 
 
                             const createProjectTaskWindowPopUp = () => 
@@ -668,12 +795,10 @@ function populateNavBar ()
                         addTask.id = "add-task";
                         addTask.addEventListener("click", function()
                         {
-                        let taskName = window.prompt("Enter DAILY TASK", "My TASK");
-                        let taskDetails = window.prompt("Enter Details", "My Details");
-                        let taskPriority = window.prompt("Enter priority", "MED");
-                        let newTask = makeDailyItem(taskName, taskDetails, taskPriority);
-                        addDaily(newTask);
-                        displayProject();
+                        createDailyTaskWindow();
+                        let newTaskPopUp = document.getElementById('tasks-edit-popup');
+                        newTaskPopUp.style.display = "grid";
+                        blurBackground();
                         });
                     taskOptions.appendChild(addTask);
         
@@ -682,7 +807,7 @@ function populateNavBar ()
                         editTask.textContent = "EDIT";
                         editTask.id = "edit-task";
                         editTask.addEventListener ("click", () => {
-                            createDailyTaskWindowPopUp();
+                            editDailyTaskWindow();
                             let taskPopUp = document.getElementById('tasks-edit-popup');
                             taskPopUp.style.display = "grid";
                             blurBackground ();
@@ -855,14 +980,38 @@ function populateNavBar ()
                         if (tableData == 0)
                             {
                                 let taskName = document.createElement('td');
-                                taskName.textContent = inputArray[arraySpot].dailyName;
-                                tableContent.appendChild(taskName);
+                                let nameDisplay = "" + inputArray[arraySpot].dailyName;
+                                // limit on screen name display to first 15 characters
+                                if (nameDisplay.length > 15)
+                                {
+                                    nameDisplay = nameDisplay.slice(0, 15);
+                                    nameDisplay = nameDisplay + "...";
+                                    taskName.textContent = nameDisplay;
+                                    tableContent.appendChild(taskName);
+                                }
+                                else 
+                                {
+                                    taskName.textContent = nameDisplay;
+                                    tableContent.appendChild(taskName);
+                                }
                             }
                         else if (tableData == 1)
                             {
                                 let taskDetails = document.createElement('td');
-                                taskDetails.textContent = inputArray[arraySpot].detail;
-                                tableContent.appendChild(taskDetails);
+                                    // limit on screen details to first 25 characters
+                                    let taskDisplay = "" + inputArray[arraySpot].detail;
+                                    if (taskDisplay.length > 25)
+                                    {
+                                        taskDisplay = taskDisplay.slice(0, 25);
+                                        taskDisplay = taskDisplay + "...";
+                                        taskDetails.textContent = taskDisplay;
+                                        tableContent.appendChild(taskDetails);
+                                    }
+                                    else 
+                                    {
+                                        taskDetails.textContent = taskDisplay;
+                                        tableContent.appendChild(taskDetails);
+                                    }
                             }
                         else if (tableData == 2)
                             {
@@ -955,14 +1104,40 @@ function populateNavBar ()
                         if (tableData == 0)
                             {
                                 let taskName = document.createElement('td');
-                                taskName.textContent = inputArray[arraySpot].projectItemName;
+                                let nameDisplay = "" + inputArray[arraySpot].projectItemName;
+                                // limit on screen name display to first 15 characters
+                                if (nameDisplay.length > 15)
+                                {
+                                nameDisplay = nameDisplay.slice(0, 15);
+                                nameDisplay = nameDisplay + "...";
+                                taskName.textContent = nameDisplay;
                                 tableContent.appendChild(taskName);
+                                }
+                                else 
+                                {
+                                    taskName.textContent = nameDisplay;
+                                    tableContent.appendChild(taskName);
+                                }
+
                             }
                         else if (tableData == 1)
                             {
                                 let taskDetails = document.createElement('td');
-                                taskDetails.textContent = inputArray[arraySpot].detail;
-                                tableContent.appendChild(taskDetails);
+                                // Limit on screen display to first 25 characters
+                                let taskDisplay = "" + inputArray[arraySpot].detail;
+                                if (taskDisplay.length > 25)
+                                {
+                                    taskDisplay = taskDisplay.slice(0, 25);
+                                    taskDisplay = taskDisplay + "...";
+                                    taskDetails.textContent = taskDisplay;
+                                    tableContent.appendChild(taskDetails);
+                                }
+                                else 
+                                {
+                                    taskDetails.textContent = taskDisplay;
+                                    tableContent.appendChild(taskDetails);
+                                }
+
                             }
                         else if (tableData == 2)
                             {
@@ -1013,7 +1188,7 @@ function populateNavBar ()
         }
 
 
-        return {projectHeadingDisplay, taskListDisplay, clearDisplay, createDailyTaskWindowPopUp}
+        return {projectHeadingDisplay, taskListDisplay, clearDisplay, editDailyTaskWindow, createDailyTaskWindow}
 
     }) (); //end of 
 
