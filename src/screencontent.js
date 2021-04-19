@@ -14,7 +14,6 @@ const navBarModule = (() => {
     let activeProjects = "Created Projects";
     const createNavBar = () =>
         {
-            // EDIT ADDING OF PROJECTS TO PROJECTS AFTER DAILY TASKS BUTTON USING ARRAY AND DOM
             let navBar = document.createElement('nav');
             navBar.className = "nav-container";
             navBar.id = "navbar";
@@ -33,9 +32,6 @@ const navBarModule = (() => {
             navSpacer.className = "nav-spacer";
             navSpacer.id = "nav-spacer";
             projectLinksContainer.appendChild(navSpacer);
-
-
-
 
             // Nav bar/Project buttons 
             let projectOptions = document.createElement('sl-button-group');
@@ -260,35 +256,37 @@ function populateNavBar ()
                     submitButton.setAttribute("type", "success");
                     submitButton.addEventListener("click", () => 
                     { 
-                        saveChanges();
-                        function saveChanges() 
-                            {
                                 let newProjectName = document.getElementById('project-name').value; 
                                 let newProjectDetails = document.getElementById("project-details").value;
-                                makeProject(newProjectName, newProjectDetails);
+                                if (newProjectName == "")
+                                {
+                                    alert('Please fill out the name field');
+                                }
+                                else
+                                {
+                                    makeProject(newProjectName, newProjectDetails);
+                                    if (selectedProject != newProjectName)
+                                    {
+                                        let lastProjectSelection = document.getElementById(selectedProject);
+                                        lastProjectSelection.className = "active-project";
+                                        toggleProject(newProjectName);
+                                        selectedProject = newProjectName;
+                                        displayProject();
+                                        populateNavBar();       
+                                    }
+                                    else 
+                                    {
+                                        toggleProject(newProjectName); 
+                                        selectedProject = newProjectName;
+                                        displayProject();
+                                        populateNavBar();       
+                                    }
+                                    unBlurBackground(); 
+                                    displayProject(); // refresh screen
+                                    let projectPopUp = document.getElementById('new-project-popup'); 
+                                    projectPopUp.parentNode.removeChild(projectPopUp); // remove window 
+                                }
 
-                                if (selectedProject != newProjectName)
-                                {
-                                    let lastProjectSelection = document.getElementById(selectedProject); //exception for deleted items?? 
-                                    lastProjectSelection.className = "active-project";
-                                    toggleProject(newProjectName); // toggles correct project in projects to add stuff
-                                    selectedProject = newProjectName;
-                                    displayProject();
-                                    populateNavBar();       
-            
-                                }
-                                else  //just in case but should be impossible
-                                {
-                                    toggleProject(newProjectName); // puts on correct project to add stuff
-                                    selectedProject = newProjectName;
-                                    displayProject();
-                                    populateNavBar();       
-                                }
-                            }
-                        unBlurBackground(); 
-                        displayProject(); // refresh screen
-                        let projectPopUp = document.getElementById('new-project-popup'); 
-                        projectPopUp.parentNode.removeChild(projectPopUp); // remove window 
                     }); // end of submit button event listener
 
                 buttonSelection.appendChild(submitButton);
@@ -397,20 +395,22 @@ function populateNavBar ()
                     submitButton.setAttribute("type", "success");
                     submitButton.addEventListener("click", () => 
                     { 
-                        saveChanges();
-                        function saveChanges() 
-                            {
                             let newName = document.getElementById("taskName").value;
                             let newDetail = document.getElementById("taskDetails").value;
                             let newPriority = document.getElementById("priority").value;
+                            if (newName == "" )
+                            {
+                                alert('Please fill out the Name field!');
+                            }
+                            else // okay to make
+                            {
                             let newDailyTask = makeDailyItem (newName, newDetail, newPriority); 
                             addDaily(newDailyTask);
+                            unBlurBackground(); 
+                            displayProject(); // refresh screen
+                            let taskPopUp = document.getElementById('tasks-edit-popup'); 
+                            taskPopUp.parentNode.removeChild(taskPopUp); // remove window 
                             }
-                        
-                        unBlurBackground(); 
-                        displayProject(); // refresh screen
-                        let taskPopUp = document.getElementById('tasks-edit-popup'); 
-                        taskPopUp.parentNode.removeChild(taskPopUp); // remove window 
                     }); // end of submit button event listener
 
                 buttonSelection.appendChild(submitButton);
@@ -740,7 +740,6 @@ function populateNavBar ()
                                         dueDate.appendChild(dueDateDisplay);
                                     tasksForm.appendChild(dueDate);
                                 
-
                                     //form Buttons attach to Tasks NAME FIELD 
                                     let buttonSelection = document.createElement('div');
                                         buttonSelection.style.marginLeft = "auto";
@@ -750,30 +749,33 @@ function populateNavBar ()
                                         submitButton.setAttribute("type", "success");
                                         submitButton.addEventListener("click", () => 
                                         { 
-                                            saveChanges();
-                                            function saveChanges() 
+                                            let newName = document.getElementById("taskName").value;
+                                            let newDetail = document.getElementById("taskDetails").value;
+                                            let newPriority = document.getElementById("priority").value;
+                                            let newDate = document.getElementById("dueDate").value;
+                                            let newCompleted = "Placeholder";
+                                                if (document.getElementById('YEP').checked)
+                                                {   
+                                                    newCompleted = "YEP";
+                                                }
+                                                else
                                                 {
-                                                let newName = document.getElementById("taskName").value;
-                                                let newDetail = document.getElementById("taskDetails").value;
-                                                let newPriority = document.getElementById("priority").value;
-                                                let newDate = document.getElementById("dueDate").value;
-                                                let newCompleted = "MAYBE";
-                                                    if (document.getElementById('YEP').checked)
-                                                    {   
-                                                        newCompleted = "YEP";
-                                                    }
-                                                    else
-                                                    {
-                                                        newCompleted = "NOPE";
-                                                    }
-                                                    let newProjectTask = makeProjectItem (newName, newDetail, newPriority, newCompleted, newDate);
-                                                    addProjectItem(newProjectTask);
+                                                    newCompleted = "NOPE";
                                                 }
                                             
-                                            unBlurBackground(); 
-                                            displayProject(); // refresh screen
-                                            let taskPopUp = document.getElementById('project-tasks-popup'); 
-                                            taskPopUp.parentNode.removeChild(taskPopUp); // remove window 
+                                            if (newName == "" )
+                                                {
+                                                alert('Please fill out the name field!');
+                                                }
+                                            else // okay to make
+                                                {
+                                                let newProjectTask = makeProjectItem (newName, newDetail, newPriority, newCompleted, newDate);
+                                                addProjectItem(newProjectTask);
+                                                unBlurBackground(); 
+                                                displayProject(); // refresh screen
+                                                let taskPopUp = document.getElementById('project-tasks-popup'); 
+                                                taskPopUp.parentNode.removeChild(taskPopUp); // remove window 
+                                                }
                                         }); // end of submit button event listener
 
                                     buttonSelection.appendChild(submitButton);
