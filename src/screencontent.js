@@ -43,27 +43,10 @@ const navBarModule = (() => {
             addProject.setAttribute("type", "success");  
             addProject.addEventListener("click", function createNewProject()
                 {
-                let projectName = window.prompt("Project Name: ", "myproject"); // placeholder until UI is fully functional create stylized entry later
-                let projectDetails = window.prompt("Project Details:", "My details");
-                makeProject (projectName, projectDetails); //adds to project list
-            
-                    if (selectedProject != projectName)
-                    {
-                        let lastProjectSelection = document.getElementById(selectedProject); //exception for deleted items?? 
-                        lastProjectSelection.className = "active-project";
-                        toggleProject(projectName); // toggles correct project in projects to add stuff
-                        selectedProject = projectName;
-                        displayProject();
-                        populateNavBar();       
-
-                    }
-                    else  //just in case but should be impossible
-                    {
-                        toggleProject(projectName); // puts on correct project to add stuff
-                        selectedProject = projectName;
-                        displayProject();
-                        populateNavBar();       
-                    }
+                    blurBackground();
+                    newProject();
+                    let taskPopUp = document.getElementById('new-project-popup');
+                    taskPopUp.style.display = "grid";
                 });
             addProject.textContent = "ADD";
             addProject.id = "add-project";
@@ -190,7 +173,30 @@ const navBarModule = (() => {
 
 let theNavBar = navBarModule.createNavBar();
 
+function newProject()
+{
+    projectMenuModule.createProjectWindow();
+}
 
+function blurBackground () 
+{
+    let nav = document.getElementById('navbar');
+    let projectInfo = document.getElementById('project-display'); 
+    let taskInfo = document.getElementById('task-container');
+        nav.className = "nav-container-blur"; 
+        taskInfo.className = "task-container-blur";
+        projectInfo.className = "project-name-display-blur";
+}
+
+function unBlurBackground () 
+{
+    let nav = document.getElementById('navbar');
+    let projectInfo = document.getElementById('project-display'); 
+    let taskInfo = document.getElementById('task-container');
+        nav.className = "nav-container"; 
+        taskInfo.className = "task-container";
+        projectInfo.className = "project-name-display";
+}
 
 
 function populateNavBar () 
@@ -205,26 +211,104 @@ function populateNavBar ()
 
     const projectMenuModule = (() => 
     {
-        // move top two functions to bottom as they are private parts of project module
-        function blurBackground () 
-        {
-            let nav = document.getElementById('navbar');
-            let projectInfo = document.getElementById('project-display'); 
-            let taskInfo = document.getElementById('task-container');
-                nav.className = "nav-container-blur"; 
-                taskInfo.className = "task-container-blur";
-                projectInfo.className = "project-name-display-blur";
-        }
 
-        function unBlurBackground () 
+        const createProjectWindow = () => 
         {
-            let nav = document.getElementById('navbar');
-            let projectInfo = document.getElementById('project-display'); 
-            let taskInfo = document.getElementById('task-container');
-                nav.className = "nav-container"; 
-                taskInfo.className = "task-container";
-                projectInfo.className = "project-name-display";
-        }
+                                            
+            let newProjectPopup = document.createElement('div');
+                newProjectPopup.id = "new-project-popup";
+                newProjectPopup.className = "new-project-popup"; //
+            let newProjectTitle = document.createElement('div');    
+                newProjectTitle.textContent = "New Project Creation";
+            
+            
+            let projectForm = document.createElement('form');
+                projectForm.id = "new-project-form";
+                projectForm.className = "new-project-form";
+                // Name Field
+                let projectNameField = document.createElement('div'); 
+                    projectNameField.textContent = "Project Name: ";
+                    let fieldSpacer = document.createElement('br');
+                    projectNameField.appendChild(fieldSpacer);
+                    let projectNameFieldInput = document.createElement('input');
+                        projectNameFieldInput.id = "project-name";
+                        projectNameFieldInput.setAttribute("name", "project name");
+                        projectNameFieldInput.setAttribute("value", "New Project"); /// fills from selected task
+                        projectNameFieldInput.setAttribute("type", "text");
+                        projectNameFieldInput.setAttribute("label", "project-name");
+                projectNameField.appendChild(projectNameFieldInput);
+            projectForm.appendChild(projectNameField);
+                // Details field
+                let detailsFieldName = document.createElement('div'); 
+                    detailsFieldName.textContent = "Details: ";
+                    let fieldSpacer2 = document.createElement('br');
+                    detailsFieldName.appendChild(fieldSpacer2);
+                    let detailsField = document.createElement('textarea');
+                        detailsField.id = "project-details";
+                        detailsField.textContent = "Project Details";
+                        detailsField.setAttribute("label", "details");
+                        detailsField.setAttribute("columns", "80");
+                        detailsField.setAttribute("rows", "3");
+                detailsFieldName.appendChild(detailsField);
+            projectForm.appendChild(detailsFieldName);
+                //form Buttons attach to Tasks NAME FIELD 
+                let buttonSelection = document.createElement('div');
+                    buttonSelection.style.marginLeft = "auto";
+                    buttonSelection.style.marginRight = "0";
+                let submitButton = document.createElement('sl-button');
+                    submitButton.textContent = "Submit Changes";
+                    submitButton.setAttribute("type", "success");
+                    submitButton.addEventListener("click", () => 
+                    { 
+                        saveChanges();
+                        function saveChanges() 
+                            {
+                                let newProjectName = document.getElementById('project-name').value; 
+                                let newProjectDetails = document.getElementById("project-details").value;
+                                makeProject(newProjectName, newProjectDetails);
+
+                                if (selectedProject != newProjectName)
+                                {
+                                    let lastProjectSelection = document.getElementById(selectedProject); //exception for deleted items?? 
+                                    lastProjectSelection.className = "active-project";
+                                    toggleProject(newProjectName); // toggles correct project in projects to add stuff
+                                    selectedProject = newProjectName;
+                                    displayProject();
+                                    populateNavBar();       
+            
+                                }
+                                else  //just in case but should be impossible
+                                {
+                                    toggleProject(newProjectName); // puts on correct project to add stuff
+                                    selectedProject = newProjectName;
+                                    displayProject();
+                                    populateNavBar();       
+                                }
+                            }
+                        unBlurBackground(); 
+                        displayProject(); // refresh screen
+                        let projectPopUp = document.getElementById('new-project-popup'); 
+                        projectPopUp.parentNode.removeChild(projectPopUp); // remove window 
+                    }); // end of submit button event listener
+
+                buttonSelection.appendChild(submitButton);
+                let cancelButton = document.createElement('sl-button');
+                    cancelButton.textContent = "Cancel";
+                    cancelButton.setAttribute("type", "danger");
+                    cancelButton.addEventListener("click", () => { unBlurBackground(); let projectPopUp = document.getElementById('new-project-popup');
+                        projectPopUp.parentNode.removeChild(projectPopUp); });
+                buttonSelection.appendChild(cancelButton);
+                
+
+                newProjectPopup.appendChild(newProjectTitle); // append tasks name to popup window
+                newProjectPopup.appendChild(projectForm); // append completed form to pop window after name
+                newProjectPopup.appendChild(buttonSelection); // add buttons to window after form 
+    
+            let body = document.getElementById('body'); //hide on body of html
+            body.appendChild(newProjectPopup); 
+
+
+        } // end of create project popUp
 
         const createDailyTaskWindow = () => 
         {            
@@ -1086,7 +1170,7 @@ function populateNavBar ()
                     let tableHeading3 = document.createElement('th');
                         tableHeading3.textContent = "Priority";
                     let tableHeading4 = document.createElement('th');
-                        tableHeading4.textContent = "Status";
+                        tableHeading4.textContent = "Completion Status";
 
                     tableHeader.appendChild(tableHeading1);
                     tableHeader.appendChild(tableHeading2);
@@ -1204,7 +1288,7 @@ function populateNavBar ()
                     let tableHeading3 = document.createElement('th');
                         tableHeading3.textContent = "Priority";
                     let tableHeading4 = document.createElement('th');
-                        tableHeading4.textContent = "Status";
+                        tableHeading4.textContent = "Completion Status";
                     let tableHeading5 = document.createElement('th');
                         tableHeading5.textContent = "Due Date";
 
@@ -1346,7 +1430,7 @@ function populateNavBar ()
         }
 
 
-        return {projectHeadingDisplay, taskListDisplay, clearDisplay, editDailyTaskWindow, createDailyTaskWindow}
+        return {projectHeadingDisplay, taskListDisplay, clearDisplay, editDailyTaskWindow, createDailyTaskWindow,  createProjectWindow}
 
     }) (); //end of 
 

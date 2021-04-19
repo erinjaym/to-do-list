@@ -16,7 +16,7 @@ addDaily(Writing);
 
 let exProject = makeProject("Example Project", "Project Details");
 toggleProject("Example Project");
-let exProjectTask = makeProjectItem ("Ex Name", "Details", "Low");
+let exProjectTask = makeProjectItem ("Name", "Details", "Low");
 let exProjectTask1 = makeProjectItem ("Take over world", "obvious", "High");
 let exProjectTask2 = makeProjectItem ("Buy Pizza", "Yum", "High");
 addProjectItem(exProjectTask);
