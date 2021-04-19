@@ -1,9 +1,9 @@
-let projectItemMaker = (nameEntry, detailEntry, priorityEntry, dueDateEntry) => {
+let projectItemMaker = (nameEntry, detailEntry, priorityEntry, completionEntry, dueDateEntry) => {
     let projectItemName = nameEntry;
     let detail = detailEntry;
-    let completed = "NOPE";
+    let completed = completionEntry;
     let priority = priorityEntry;
-    let dueDate = "10/10/2021";
+    let dueDate = dueDateEntry;
 
     function info() { 
         console.log("Item Info: " + this.projectItemName + " " + this.detail + " " + this.completed + " " + this.priority);
@@ -49,10 +49,9 @@ function changeDueDate (projectItem, newDate)
     return console.log("Date Changed to :" + projectItem.dueDate);
 }
 
-function makeProjectItem (name, detail, priority) 
+function makeProjectItem (name, detail, priority, status, dueDate) 
     {
-    let item = projectItemMaker(name, detail, priority);
-    item.info();
+    let item = projectItemMaker(name, detail, priority, status, dueDate);
     return item;
 }
 

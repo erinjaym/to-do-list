@@ -348,10 +348,6 @@ function populateNavBar ()
 
         } // end of createDailyTaskWindow
 
-
-
-
-
                             const editDailyTaskWindow = () => 
                             {
                                 
@@ -549,10 +545,174 @@ function populateNavBar ()
                 
                                     }
 
-                            } // end of dailyTaskWindow
+                            } // end of editDailyTaskWindow
+
+                            const createProjectTaskWindow = () => 
+                            {
+                                                                
+                                let tasksEditPopup = document.createElement('div');
+                                    tasksEditPopup.id = "project-tasks-popup";
+                                    tasksEditPopup.className = "project-tasks-popup";
+                                let tasksName = document.createElement('div');    
+                                    tasksName.textContent = selectedProject;
+                                
+                                
+                                let tasksForm = document.createElement('form');
+                                    tasksForm.id = "project-tasks-edit-form";
+                                    tasksForm.className = "project-tasks-edit-form";
+                                    // Name Field
+                                    let tasksNameField = document.createElement('div'); 
+                                        tasksNameField.textContent = "Name: ";
+                                        let fieldSpacer = document.createElement('br');
+                                        tasksNameField.appendChild(fieldSpacer);
+                                        let tasksNameFieldInput = document.createElement('input');
+                                            tasksNameFieldInput.id = "taskName";
+                                            tasksNameFieldInput.setAttribute("name", "name");
+                                            tasksNameFieldInput.setAttribute("value", "Task Name"); /// fills from selected task
+                                            tasksNameFieldInput.setAttribute("type", "text");
+                                            tasksNameFieldInput.setAttribute("label", "name");
+                                    tasksNameField.appendChild(tasksNameFieldInput);
+                                tasksForm.appendChild(tasksNameField);
+                                    // Details field
+                                    let detailsFieldName = document.createElement('div'); 
+                                        detailsFieldName.textContent = "Details: ";
+                                        let fieldSpacer2 = document.createElement('br');
+                                        detailsFieldName.appendChild(fieldSpacer2);
+                                        let detailsField = document.createElement('textarea');
+                                            detailsField.id = "taskDetails";
+                                            detailsField.textContent = "Task Details";
+                                            detailsField.setAttribute("label", "details");
+                                            detailsField.setAttribute("columns", "50");
+                                            detailsField.setAttribute("rows", "3");
+                                    detailsFieldName.appendChild(detailsField);
+                                tasksForm.appendChild(detailsFieldName);
+                                    // Priority Field
+                                    let prioritySelection = document.createElement('div');
+                                        let priorityFieldName = document.createElement('label');
+                                        priorityFieldName.setAttribute("for", "priority");
+                                        priorityFieldName.textContent = "Priority Select: ";
+                                            let fieldSpacer3 = document.createElement('br');
+                                        priorityFieldName.appendChild(fieldSpacer3);
+                                    prioritySelection.appendChild(priorityFieldName);
+
+                                        let priorityField = document.createElement('select');
+                                            priorityField.setAttribute("name", "priority");
+                                            priorityField.id = ("priority");
+                                                let lowOption = document.createElement('option');
+                                                    lowOption.setAttribute('value', 'Low');
+                                                    lowOption.textContent = "Low";
+                                                    priorityField.appendChild(lowOption);
+                                                let medOption = document.createElement('option');
+                                                    medOption.setAttribute('value', 'Med');
+                                                    medOption.textContent = "Med";
+                                                    priorityField.appendChild(medOption);
+                                                let highOption = document.createElement('option');
+                                                    highOption.setAttribute('value', 'High');
+                                                    highOption.textContent = "High";
+                                                    priorityField.appendChild(highOption);
+                                    prioritySelection.appendChild(priorityField);
+                                tasksForm.appendChild(prioritySelection);
+                                    // Completion Status
+                                    let completionStatus = document.createElement('div');
+                                        completionStatus.textContent = "Completion Status: ";
+                                        let fieldSpacer4 = document.createElement('br');
+                                        completionStatus.appendChild(fieldSpacer4);
+                                        let yesBox = document.createElement('input');
+                                            yesBox.id = "YEP";
+                                            yesBox.setAttribute("type", "radio");
+                                            yesBox.setAttribute("name", "status");
+                                            yesBox.setAttribute("value", "YEP");
+                                        let noBox = document.createElement('input');
+                                            noBox.id = "NOPE";
+                                            noBox.setAttribute("type", "radio");
+                                            noBox.setAttribute("name", "status");
+                                            noBox.setAttribute("value", "NOPE");
+                                        let yesBoxText = document.createElement('span');
+                                            yesBoxText.textContent = "YEP";
+                                            yesBoxText.style.fontSize = "large";
+                                            yesBoxText.style.fontWeight = "normal";
+                                            yesBoxText.style.color = "green";
+                                    completionStatus.appendChild(yesBoxText);
+                                    completionStatus.appendChild(yesBox);
+                                        let noBoxText = document.createElement('span');
+                                            noBoxText.textContent = "NOPE";
+                                            noBoxText.style.fontSize = "large";
+                                            noBoxText.style.fontWeight = "normal";
+                                            noBoxText.style.color = "red";
+                                    completionStatus.appendChild(noBoxText);
+                                    completionStatus.appendChild(noBox);
+                                tasksForm.appendChild(completionStatus);
+                                    
+                                        let dueDate = document.createElement('div');
+                                        dueDate.textContent = "Due Date: ";
+                                        let fieldSpacer5 = document.createElement('br');
+                                        dueDate.appendChild(fieldSpacer5);
+                                        let dueDateDisplay = document.createElement('input');
+                                        dueDateDisplay.id = "dueDate";
+                                        dueDateDisplay.setAttribute("type", "text");
+                                        dueDateDisplay.setAttribute("name", "due-date");
+                                        dueDateDisplay.setAttribute("label", "due-date");
+                                        dueDateDisplay.setAttribute("value", "04/21/21");
+                                        dueDate.appendChild(dueDateDisplay);
+                                    tasksForm.appendChild(dueDate);
+                                
+
+                                    //form Buttons attach to Tasks NAME FIELD 
+                                    let buttonSelection = document.createElement('div');
+                                        buttonSelection.style.marginLeft = "auto";
+                                        buttonSelection.style.marginRight = "0";
+                                    let submitButton = document.createElement('sl-button');
+                                        submitButton.textContent = "Submit Changes";
+                                        submitButton.setAttribute("type", "success");
+                                        submitButton.addEventListener("click", () => 
+                                        { 
+                                            saveChanges();
+                                            function saveChanges() 
+                                                {
+                                                let newName = document.getElementById("taskName").value;
+                                                let newDetail = document.getElementById("taskDetails").value;
+                                                let newPriority = document.getElementById("priority").value;
+                                                let newDate = document.getElementById("dueDate").value;
+                                                let newCompleted = "MAYBE";
+                                                    if (document.getElementById('YEP').checked)
+                                                    {   
+                                                        newCompleted = "YEP";
+                                                    }
+                                                    else
+                                                    {
+                                                        newCompleted = "NOPE";
+                                                    }
+                                                    let newProjectTask = makeProjectItem (newName, newDetail, newPriority, newCompleted, newDate);
+                                                    addProjectItem(newProjectTask);
+                                                }
+                                            
+                                            unBlurBackground(); 
+                                            displayProject(); // refresh screen
+                                            let taskPopUp = document.getElementById('project-tasks-popup'); 
+                                            taskPopUp.parentNode.removeChild(taskPopUp); // remove window 
+                                        }); // end of submit button event listener
+
+                                    buttonSelection.appendChild(submitButton);
+                                    let cancelButton = document.createElement('sl-button');
+                                        cancelButton.textContent = "Cancel";
+                                        cancelButton.setAttribute("type", "danger");
+                                        cancelButton.addEventListener("click", () => { unBlurBackground(); let taskPopUp = document.getElementById('project-tasks-popup');
+                                            taskPopUp.parentNode.removeChild(taskPopUp); });
+                                    buttonSelection.appendChild(cancelButton);
+                                    
+        
+                                    tasksEditPopup.appendChild(tasksName); // append tasks name to popup window
+                                    tasksEditPopup.appendChild(tasksForm); // append completed form to pop window after name
+                                    tasksEditPopup.appendChild(buttonSelection); // add buttons to window after form 
+                        
+                                let body = document.getElementById('body'); //hide on body of html
+                                body.appendChild(tasksEditPopup); 
 
 
-                            const createProjectTaskWindowPopUp = () => 
+                            } // end of create project task popUp
+
+
+                            const editProjectTaskWindow = () => 
                             {
                                 
                                 let taskToEdit = findProjectItem(selectedTask); // get correct project task from projects
@@ -862,12 +1022,10 @@ function populateNavBar ()
                         addTask.setAttribute("type", "success");
                         addTask.addEventListener("click", function()
                         {
-                        let taskName = window.prompt("Enter NEW PROJECT TASK", "My TASK");
-                        let taskDetails = window.prompt("Enter Details", "My Details");
-                        let taskPriority = window.prompt("Enter priority", "MED");
-                        let newTask = makeProjectItem(taskName, taskDetails, taskPriority);
-                        addProjectItem(newTask); 
-                        displayProject();
+                        createProjectTaskWindow();
+                        let taskPopUp = document.getElementById('project-tasks-popup');
+                        taskPopUp.style.display = "grid";
+                        blurBackground();
                         });
                         addTask.textContent = "ADD TASK";
                         addTask.id = "add-task";
@@ -878,7 +1036,7 @@ function populateNavBar ()
                         editTask.textContent = "EDIT";
                         editTask.id = "edit-task";
                         editTask.addEventListener ("click", () => {
-                            createProjectTaskWindowPopUp(); // adds task window to screen 
+                            editProjectTaskWindow(); // adds task window to screen 
                             let taskPopUp = document.getElementById('project-tasks-popup');
                             taskPopUp.style.display = "grid";
                             blurBackground ();
