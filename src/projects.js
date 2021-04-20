@@ -4,12 +4,11 @@ let projectsList = [];
 let currentProject = "None";
 let currentProjectTasks = "None";
 
-let projectsMaker = (nameEntry, descriptionEntry) => 
+let projectsMaker = (nameEntry) => 
 {
     let projectName = nameEntry;
-    let description = descriptionEntry;
     let listOfTasks = [];
-    return {projectName, description, listOfTasks};
+    return {projectName, listOfTasks};
 };
 
 function getProjectNames ()
@@ -64,9 +63,9 @@ function deleteProject (userInput)
     return false;
 }
 
-function makeProject (nameEntry, descriptionEntry)
+function makeProject (nameEntry)
 {
-    projectsList.push(projectsMaker(nameEntry, descriptionEntry));
+    projectsList.push(projectsMaker(nameEntry));
     populateDailyStorage(); 
 }
 

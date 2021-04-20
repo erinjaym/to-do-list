@@ -243,11 +243,12 @@ const projectMenuModule = (() =>
                 projectForm.className = "new-project-form";
                 // Name Field
                 let projectNameField = document.createElement('div'); 
-                    projectNameField.textContent = "Project Name: ";
+                    projectNameField.textContent = "New Project Name: ";
                     let fieldSpacer = document.createElement('br');
                     projectNameField.appendChild(fieldSpacer);
                     let projectNameFieldInput = document.createElement('input');
                         projectNameFieldInput.id = "project-name";
+                        projectNameFieldInput.setAttribute("size", "30");
                         projectNameFieldInput.setAttribute("name", "project name");
                         projectNameFieldInput.setAttribute("value", "New Project"); /// fills from selected task
                         projectNameFieldInput.setAttribute("type", "text");
@@ -255,7 +256,7 @@ const projectMenuModule = (() =>
                 projectNameField.appendChild(projectNameFieldInput);
             projectForm.appendChild(projectNameField);
                 // Details field
-                let detailsFieldName = document.createElement('div'); 
+                /*let detailsFieldName = document.createElement('div'); 
                     detailsFieldName.textContent = "Details: ";
                     let fieldSpacer2 = document.createElement('br');
                     detailsFieldName.appendChild(fieldSpacer2);
@@ -266,25 +267,25 @@ const projectMenuModule = (() =>
                         detailsField.setAttribute("columns", "80");
                         detailsField.setAttribute("rows", "3");
                 detailsFieldName.appendChild(detailsField);
-            projectForm.appendChild(detailsFieldName);
+            projectForm.appendChild(detailsFieldName); */
                 //form Buttons attach to Tasks NAME FIELD 
                 let buttonSelection = document.createElement('div');
                     buttonSelection.style.marginLeft = "auto";
-                    buttonSelection.style.marginRight = "0";
+                    buttonSelection.style.marginRight = "auto";
                 let submitButton = document.createElement('sl-button');
                     submitButton.textContent = "Submit Changes";
                     submitButton.setAttribute("type", "success");
                     submitButton.addEventListener("click", () => 
                     { 
                         let newProjectName = document.getElementById('project-name').value; 
-                        let newProjectDetails = document.getElementById("project-details").value;
+                         // let newProjectDetails = document.getElementById("project-details").value; for posible future details addition
                             if (newProjectName == "")
                             {
                                 alert('Please fill out the name field');
                             }
                             else
                             {
-                                makeProject(newProjectName, newProjectDetails);
+                                makeProject(newProjectName);
                                 if (selectedProject != newProjectName)
                                 {
                                     let lastProjectSelection = document.getElementById(selectedProject);
@@ -1022,6 +1023,7 @@ const projectMenuModule = (() =>
                     let projectTitle = document.createElement("div");
                     projectTitle.textContent = "Daily Tasks";
                     currentProject.appendChild(projectTitle);
+
                     
                         
 
@@ -1084,6 +1086,7 @@ const projectMenuModule = (() =>
                     let projectTitle = document.createElement("div");
                     let toggledProjectName = getCurrentProjectName();
                     let currentProjectTitle = "Default";
+                    
                     if (toggledProjectName == "nofutureprojects") // display default daily
                     {
                         currentProjectTitle = "Daily Tasks"; // base case 
