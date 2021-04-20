@@ -1,3 +1,42 @@
+.active-project
+{
+    border-bottom: solid;
+    border-color:rgb(3, 0, 0); 
+    font-size: 1.5em;
+    padding: 5px;
+}
+.active-project:hover
+{
+    color: white;
+    border-bottom: solid;
+    border-color:white; 
+    font-size: 1.8em;
+    padding: 5px;
+}
+
+.active-project-active
+{
+    color: white;
+    border-bottom: solid;
+    border-color:white; 
+    font-size: 1.8em;
+    padding: 5px;
+}
+
+.active-projects-container 
+{
+    align-items: center; 
+    background-color: rgba(241, 33, 33, 0.5); 
+    border-bottom:dotted;
+    border-color:rgba(240, 0, 0, 0.199); 
+    border-top:dotted;
+    border-color:rgba(240, 0, 0, 0.199); 
+    display: flex; 
+    flex-direction: column;
+    padding: 5px;
+    width: 100%;
+}
+  
   .main-section 
   {
     display: flex; 
@@ -46,59 +85,141 @@
     border-color:rgba(240, 0, 0, 0.4);
     font-size: 2.5em;
 }
-  
-  .project-options-container 
-{
-    align-items: center; 
-    display: flex; 
-    padding-bottom: 5px;
-    flex-direction: column;
-    width: 100%;
-}
 
-.active-projects-container 
-{
-    align-items: center; 
-    background-color: rgba(241, 33, 33, 0.5); 
-    border-bottom:dotted;
-    border-color:rgba(240, 0, 0, 0.199); 
-    border-top:dotted;
-    border-color:rgba(240, 0, 0, 0.199); 
-    display: flex; 
-    padding: 5px;
-    flex-direction: column;
-    width: 100%;
-}
-
-.active-project
-{
-    border-bottom: solid;
-    border-color:rgb(3, 0, 0); 
-    font-size: 1.5em;
-    padding: 5px;
-}
-.active-project:hover
-{
-    color: white;
-    border-bottom: solid;
-    border-color:white; 
-    font-size: 1.8em;
-    padding: 5px;
-}
-
-.active-project-active
-{
-    color: white;
-    border-bottom: solid;
-    border-color:white; 
-    font-size: 1.8em;
-    padding: 5px;
-}
 
 .nav-spacer
 {
     height: 40px;
     width: 10px;
+}
+
+.new-project-form
+{
+  background-color: rgb(252, 249, 249);
+  border-radius: 1%;
+  border-top: solid 2px red;
+  display: grid;
+  font-weight: bold;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10px;
+  padding: 5px;
+  position: relative;
+}
+
+.new-project-popup
+{
+  border-radius: 2%;
+  background-color: rgb(252, 249, 249);
+  display: none;
+  font-size: 1.1em;
+  font-weight: bold;
+  grid-template-rows: .2fr 1fr .5fr;
+  grid-template-columns: 1fr;
+  height: 200px;
+  left: 50%;
+  padding: 5px;;
+  position: absolute;
+  row-gap: 5px;
+  top: 35%;
+  width: 700px;
+  transform: translate(-50%, -50%);
+}
+
+.project-name-display
+{
+  align-items: flex-end;
+  background:hsla(0, 50%, 85%, 0.5);
+  color: rgba(240, 0, 0, 0.6);
+  display: flex; 
+  flex-direction: row;
+  font-size: 2.5em;
+  font-weight: bold;
+  gap: 30px;
+  height: 120px;
+  left: 253px;
+  right: 0px;
+  padding-left: 30px;
+  position: fixed;
+  text-shadow: -1px 1px 1px #fff,
+    1px 1px 1px #fff,
+    1px -1px 0px #fff,
+    -1px -1px 0px #fff;
+  top: 0px;
+}
+
+.project-name-display-blur
+{
+  align-items: flex-end;
+  background:hsla(0, 50%, 85%, 0.5);
+  color: rgba(240, 0, 0, 0.6);
+  display: flex; 
+  font-size: 2.5em;
+  font-weight: bold;
+  filter: blur(2px);
+  flex-direction: row;
+  gap: 30px;
+  height: 120px;
+  left: 253px;
+  right: 0px;
+  padding-left: 30px;
+  position: fixed;
+  text-shadow: -1px 1px 1px #fff,
+    1px 1px 1px #fff,
+    1px -1px 0px #fff,
+    -1px -1px 0px #fff;
+  top: 0px;
+  -webkit-filter: blur(2px);
+}
+
+.project-options-container 
+{
+    align-items: center; 
+    display: flex; 
+    flex-direction: column;
+    padding-bottom: 5px;
+    width: 100%;
+}
+
+.project-tasks-popup
+{
+  border-radius: 2%;
+  background-color: rgb(252, 249, 249);
+  display: none;
+  font-size: 1.1em;
+  font-weight: bold;
+  row-gap: 5px;
+  grid-template-rows: .5fr 1fr .5fr;
+  grid-template-columns: 1fr;
+  height: 200px;
+  left: 50%;
+  padding: 10px;;
+  position: absolute;
+  top: 35%;
+  width: 700px;
+  transform: translate(-50%, -50%);
+}
+
+.project-tasks-edit-form
+{
+  background-color: rgb(252, 249, 249);
+  border-radius: 1%;
+  border-top: solid 2px red;
+  display: grid;
+  font-weight: bold;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr .5fr;
+  grid-column-gap: 20px;
+  padding: 5px;
+  position: relative;
+}
+
+.table-header
+{
+  background-color: red;
+  border-color: red;
+  font-weight: bold;
+  text-align: left;
 }
 
 .task-container 
@@ -121,76 +242,55 @@
     bottom: 0px;
     display: flex; 
     flex-direction: column;
+    filter: blur(2px);
     height: auto;
     left: 253px;
     right: 0px;
     padding: 10px 50px 0px; 
     position: fixed; 
     top: 120px;
-    filter: blur(2px);
     -webkit-filter: blur(2px);
 }
 
-.project-name-display
+.tasks-edit-form
 {
-  align-items: flex-end;
-  background:hsla(0, 50%, 85%, 0.5);
-  color: rgba(240, 0, 0, 0.6);
-  display: flex; 
-  font-size: 2.5em;
+  background-color: rgb(252, 249, 249);
+  border-radius: 1%;
+  border-top: solid 2px red;
+  display: grid;
   font-weight: bold;
-  flex-direction: row;
-  gap: 30px;
-  height: 120px;
-  left: 253px;
-  right: 0px;
-  padding-left: 30px;
-  position: fixed;
-  text-shadow: -1px 1px 1px #fff,
-    1px 1px 1px #fff,
-    1px -1px 0px #fff,
-    -1px -1px 0px #fff;
-  top: 0px;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr .5fr;
+  grid-column-gap: 20px;
+  padding: 5px;
+  position: relative;
 }
 
-.project-name-display-blur
+.tasks-edit-popup
 {
-  align-items: flex-end;
-  background:hsla(0, 50%, 85%, 0.5);
-  color: rgba(240, 0, 0, 0.6);
-  display: flex; 
-  font-size: 2.5em;
+  border-radius: 2%;
+  background-color: rgb(252, 249, 249);
+  display: none;
+  font-size: 1.1em;
   font-weight: bold;
-  flex-direction: row;
-  gap: 30px;
-  height: 120px;
-  left: 253px;
-  right: 0px;
-  padding-left: 30px;
-  position: fixed;
-  text-shadow: -1px 1px 1px #fff,
-    1px 1px 1px #fff,
-    1px -1px 0px #fff,
-    -1px -1px 0px #fff;
-  top: 0px;
-  filter: blur(2px);
-  -webkit-filter: blur(2px);
-}
-
-.table-header
-{
-  background-color: red;
-  border-color: red;
-  font-weight: bold;
-  text-align: left;
+  grid-template-rows: .5fr 1fr .5fr;
+  grid-template-columns: 1fr;
+  height: 200px;
+  left: 50%;
+  padding: 10px;;
+  position: absolute;
+  row-gap: 5px;
+  top: 35%;
+  width: 700px;
+  transform: translate(-50%, -50%);
 }
 
 .task-table
 {
   border-collapse: collapse;
   border-bottom: solid black 1px;
-  margin: 25px 0;
   font-size: 1.5em;
+  margin: 25px 0;
   min-width: 400px;
 }
 
@@ -209,106 +309,5 @@ td
 {
 
 }
-.tasks-edit-form
-{
-border-radius: 1%;
-border-top: solid 2px red;
-display: grid;
-grid-template-rows: 1fr;
-grid-template-columns: 1fr 1fr .5fr;
-grid-column-gap: 20px;
-font-weight: bold;
-background-color: rgb(252, 249, 249);
-padding: 5px;
-position: relative;
-}
 
-.tasks-edit-popup
-{
-  border-radius: 2%;
-  background-color: rgb(252, 249, 249);
-  display: none;
-  font-size: 1.1em;
-  font-weight: bold;
-  row-gap: 5px;
-  grid-template-rows: .5fr 1fr .5fr;
-  grid-template-columns: 1fr;
-  padding: 10px;;
-  position: absolute;
-  top: 35%;
-  left: 50%;
-  width: 700px;
-  height: 200px;
-  transform: translate(-50%, -50%);
-}
 
-.project-tasks-popup
-{
-  border-radius: 2%;
-  background-color: rgb(252, 249, 249);
-  display: none;
-  font-size: 1.1em;
-  font-weight: bold;
-  row-gap: 5px;
-  grid-template-rows: .5fr 1fr .5fr;
-  grid-template-columns: 1fr;
-  padding: 10px;;
-  position: absolute;
-  top: 35%;
-  left: 50%;
-  width: 700px;
-  height: 200px;
-  transform: translate(-50%, -50%);
-}
-
-.project-tasks-edit-form
-{
-border-radius: 1%;
-border-top: solid 2px red;
-display: grid;
-grid-template-rows: 1fr;
-grid-template-columns: 1fr 1fr .5fr;
-grid-column-gap: 20px;
-font-weight: bold;
-background-color: rgb(252, 249, 249);
-padding: 5px;
-position: relative;
-}
-
-.new-project-form
-{
-border-radius: 1%;
-border-top: solid 2px red;
-display: grid;
-grid-template-rows: 1fr;
-grid-template-columns: 1fr 1fr;
-grid-column-gap: 10px;
-font-weight: bold;
-background-color: rgb(252, 249, 249);
-padding: 5px;
-position: relative;
-}
-
-.new-project-popup
-{
-  border-radius: 2%;
-  background-color: rgb(252, 249, 249);
-  display: none;
-  font-size: 1.1em;
-  font-weight: bold;
-  row-gap: 5px;
-  grid-template-rows: .2fr 1fr .5fr;
-  grid-template-columns: 1fr;
-  padding: 5px;;
-  position: absolute;
-  top: 35%;
-  left: 50%;
-  width: 700px;
-  height: 200px;
-  transform: translate(-50%, -50%);
-}
-
-.is-blurred { 
-  filter: blur(2px);
-  -webkit-filter: blur(2px);
-}

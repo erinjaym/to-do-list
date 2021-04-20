@@ -2,31 +2,13 @@ import {getDailyStorage} from './storage';
 
 let dailyProjectsList = [];
 
-function addDailyFromStorage() //only called on start of program if it exists
-{
-    let storedArray = getDailyStorage();
-    for (let storedItem = 0; storedItem <= storedArray.length-1; storedItem++)
-    {
-        dailyProjectsList.push(storedArray[storedItem]);
-    }
-
-}
-
-
-function populateDailyStorage ()
-{
-    localStorage.setItem("dailyArray", JSON.stringify(dailyProjectsList));
-}
-
-
 function displayDailyProjects ()
 {
-    //had console log to display replaced with this for time being
     let dailyTaskDisplay = dailyProjectsList;
     return dailyTaskDisplay;
 }
 
-function deleteDaily (dailyItemName) // need to add exception for list being empty 
+function deleteDaily (dailyItemName)
 {
     for (let findName = 0; findName <= dailyProjectsList.length-1; findName ++)
     {
@@ -37,14 +19,12 @@ function deleteDaily (dailyItemName) // need to add exception for list being emp
         }
         else
         {
-            console.log('no match');
+            //console.log('nothing to delete!');
         }
     }
-
-    return console.log('did what could be done');
 }
 
-function addDaily (dailyItem) // may need to run a check to see if Name exists first
+function addDaily (dailyItem)
 {
     dailyProjectsList.push(dailyItem);
     populateDailyStorage();
@@ -63,6 +43,22 @@ function findDailyTask (dailyName)
         {
             console.log("couldnt find it");
         }
+    }
+}
+
+
+// for local storage
+function populateDailyStorage ()
+{
+    localStorage.setItem("dailyArray", JSON.stringify(dailyProjectsList));
+}
+
+function addDailyFromStorage()
+{
+    let storedArray = getDailyStorage();
+    for (let storedItem = 0; storedItem <= storedArray.length-1; storedItem++)
+    {
+        dailyProjectsList.push(storedArray[storedItem]);
     }
 }
 

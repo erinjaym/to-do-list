@@ -1,23 +1,16 @@
 import {getProjectStorage} from './storage';
 
-
 let projectsList = [];
-let currentProject = "None"; // shows list of current project
-let currentProjectTasks = "None"; // used for display currently selected project items
+let currentProject = "None";
+let currentProjectTasks = "None";
 
 let projectsMaker = (nameEntry, descriptionEntry) => 
 {
-let projectName = nameEntry;
-let description = descriptionEntry;
-let listOfTasks = [];
-return {projectName, description, listOfTasks};
+    let projectName = nameEntry;
+    let description = descriptionEntry;
+    let listOfTasks = [];
+    return {projectName, description, listOfTasks};
 };
-
-function getProjects ()
-{
-    let theProjects = projectsList;
-    return theProjects; //shows list of projects for testing 
-}
 
 function getProjectNames ()
 {
@@ -26,55 +19,30 @@ function getProjectNames ()
 
             for (let currentName = 0; currentName <= projectsList.length-1; currentName++)
             {
-                console.log('making names list');
                 let projectName = theProjects[currentName].projectName;
                 namesList.push(projectName);
             }
-
     return namesList;
 }
 
 
-function addProjectsFromStorage() //only called on start of program if it exists
-{
-    let storedArray = getProjectStorage();
-    for (let storedItem = 0; storedItem <= storedArray.length-1; storedItem++)
-    {
-        projectsList.push(storedArray[storedItem]);
-    }
-
-}
-
-
-function populateDailyStorage ()
-{
-    localStorage.setItem("projectsArray", JSON.stringify(projectsList));
-}
-
-
-
-function getCurrentProjectTaskList() // list of items in each proejct ?? ... same as whats underneath?? 
+function getCurrentProjectTaskList()
 {
     let allProjects = currentProjectTasks;
     return allProjects;
 }
 
-function displayCurrentProject ()
-{
-    return currentProject; //shows currently toggled project
-}
 
 function getCurrentProjectName()
 {
     if (currentProject == "None")
     {
-        return "nofutureprojects";
-
+        return "None";
     }
     else 
     {
     let currentProjectName = currentProject.projectName;
-    return currentProjectName; // returns current project name
+    return currentProjectName;
     }
 }
 
@@ -90,14 +58,13 @@ function deleteProject (userInput)
         }
         else
         {
-            console.log('delete no match');
+            //console.log('nothing to delete');
         }
     }
     return false;
 }
 
-
-function makeProject (nameEntry, descriptionEntry) // may need to run a check to see if Name exists first
+function makeProject (nameEntry, descriptionEntry)
 {
     projectsList.push(projectsMaker(nameEntry, descriptionEntry));
     populateDailyStorage(); 
@@ -109,38 +76,32 @@ function addProjectItem (projectItem)
     populateDailyStorage();
 }
 
-function toggleProject (projectName) // move to currently elected project may need global var to track
+function toggleProject (projectName) // move to currently elected project
 {
-    // need a toggle for 0 projects??  need to initialize currentProejct tasks if first project selection
-//    let projectsList = [];
-if (projectsList.length == 0)
-{
-    console('should not be getting called failsafe');
+    if (projectsList.length == 0)
+    {
     return false;
-}
-else 
-{
+    }
+    else 
+    {
         for (let search = 0; search <= projectsList.length-1; search ++)
         {
             if (projectsList[search].projectName == projectName)
             {
                 currentProject = projectsList[search];
                 currentProjectTasks = projectsList[search].listOfTasks;
-                console.log('toggled to:');
-                console.log(currentProject);
-                console.log(currentProjectTasks);
                 return true;
             }
             else 
             {
-                 console.log('not found keep going');
+                // console.log('not found keep going');
             }
         }
-}
+    }
 
 }
 
-function deleteProjectItem (projectItemName) // searches through current projects list to delete
+function deleteProjectItem (projectItemName) 
 {
     for (let findName = 0; findName <= currentProjectTasks.length-1; findName ++)
     {
@@ -151,14 +112,12 @@ function deleteProjectItem (projectItemName) // searches through current project
         }
         else
         {
-            console.log('no match');
+           // console.log('no match');
         }
     }
-
-    return console.log('did what could be done');
 }
 
-function findProjectItem (projectItemName) // searches through current projects list to delete
+function findProjectItem (projectItemName)
 {
     for (let findName = 0; findName <= currentProjectTasks.length-1; findName ++)
     {
@@ -168,12 +127,25 @@ function findProjectItem (projectItemName) // searches through current projects 
         }
         else
         {
-            console.log('no match');
+          //  console.log('no match');
         }
     }
-
-    return console.log('did what could be done');
 }
 
 
-export {addProjectsFromStorage, findProjectItem, getProjectNames, getCurrentProjectTaskList, getCurrentProjectName, makeProject, addProjectItem, deleteProject, getProjects, toggleProject, displayCurrentProject, deleteProjectItem};
+// for local storage
+function addProjectsFromStorage() 
+{
+    let storedArray = getProjectStorage();
+    for (let storedItem = 0; storedItem <= storedArray.length-1; storedItem++)
+    {
+        projectsList.push(storedArray[storedItem]);
+    }
+}
+
+function populateDailyStorage ()
+{
+    localStorage.setItem("projectsArray", JSON.stringify(projectsList));
+}
+
+export {addProjectsFromStorage, findProjectItem, getProjectNames, getCurrentProjectTaskList, getCurrentProjectName, makeProject, addProjectItem, deleteProject, toggleProject, deleteProjectItem};
