@@ -1,3 +1,6 @@
+import {getProjectStorage} from './storage';
+
+
 let projectsList = [];
 let currentProject = "None"; // shows list of current project
 let currentProjectTasks = "None"; // used for display currently selected project items
@@ -32,6 +35,24 @@ function getProjectNames ()
 }
 
 
+function addProjectsFromStorage() //only called on start of program if it exists
+{
+    let storedArray = getProjectStorage();
+    for (let storedItem = 0; storedItem <= storedArray.length-1; storedItem++)
+    {
+        projectsList.push(storedArray[storedItem]);
+    }
+
+}
+
+
+function populateDailyStorage ()
+{
+    localStorage.setItem("projectsArray", JSON.stringify(projectsList));
+}
+
+
+
 function getCurrentProjectTaskList() // list of items in each proejct ?? ... same as whats underneath?? 
 {
     let allProjects = currentProjectTasks;
@@ -64,6 +85,7 @@ function deleteProject (userInput)
         if (projectsList[find].projectName == userInput)
         {
             projectsList.splice(find, 1);
+            populateDailyStorage();
             return true;
         }
         else
@@ -77,12 +99,14 @@ function deleteProject (userInput)
 
 function makeProject (nameEntry, descriptionEntry) // may need to run a check to see if Name exists first
 {
-    projectsList.push(projectsMaker(nameEntry, descriptionEntry)); 
+    projectsList.push(projectsMaker(nameEntry, descriptionEntry));
+    populateDailyStorage(); 
 }
 
-function addProjectItem (projectItem)  // NEED TO ADD FOR IF THERE IS NO CURRENTLY SELECTED LIST! / nothing yet?
+function addProjectItem (projectItem) 
 {
     currentProjectTasks.push(projectItem);
+    populateDailyStorage();
 }
 
 function toggleProject (projectName) // move to currently elected project may need global var to track
@@ -123,6 +147,7 @@ function deleteProjectItem (projectItemName) // searches through current project
         if (currentProjectTasks[findName].projectItemName == projectItemName)
         {
             currentProjectTasks.splice(findName, 1);
+            populateDailyStorage();
         }
         else
         {
@@ -151,4 +176,4 @@ function findProjectItem (projectItemName) // searches through current projects 
 }
 
 
-export {findProjectItem, getProjectNames, getCurrentProjectTaskList, getCurrentProjectName, makeProject, addProjectItem, deleteProject, getProjects, toggleProject, displayCurrentProject, deleteProjectItem};
+export {addProjectsFromStorage, findProjectItem, getProjectNames, getCurrentProjectTaskList, getCurrentProjectName, makeProject, addProjectItem, deleteProject, getProjects, toggleProject, displayCurrentProject, deleteProjectItem};

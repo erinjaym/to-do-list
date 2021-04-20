@@ -1,16 +1,11 @@
 
-let dailyItemMaker = (nameEntry, detailEntry, priorityEntry) => {
+let dailyItemMaker = (nameEntry, detailEntry, priorityEntry, status) => {
     let dailyName = nameEntry;
     let detail = detailEntry;
-    let completed = "NOPE";
     let priority = priorityEntry;
-    function sayName () {  // use for selection methods later ?? 
-        return this.dailyName;
-    }
-    function info() { 
-        console.log("Item Info: " + this.dailyName + " " + this.detail + " " + this.completed + " " + this.priority);
-    }
-    return {dailyName, detail, completed, priority, info, sayName};
+    let completed = status;
+
+    return {dailyName, detail, completed, priority};
 };
 
 function toggleDailyComplete (dailyItem, status) // check or uncheck Item
@@ -42,10 +37,9 @@ function changeDailyName (dailyItem, newName) // need to make basecases for no e
     return console.log("Changed Name to " + dailyItem.dailyName);
 } 
 
-function makeDailyItem (name, detail, priority) 
+function makeDailyItem (name, detail, priority, status) 
 {
-let daily = dailyItemMaker(name, detail, priority);
-daily.info();
+let daily = dailyItemMaker(name, detail, priority, status);
 return daily;
 }
 

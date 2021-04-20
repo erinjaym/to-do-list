@@ -1,7 +1,35 @@
-import {findProjectItem, getCurrentProjectTaskList, getProjectNames, makeProject, deleteProject, toggleProject, getCurrentProjectName, getProjects, addProjectItem, deleteProjectItem} from './projects';
+import {addProjectsFromStorage, findProjectItem, getCurrentProjectTaskList, getProjectNames, makeProject, deleteProject, toggleProject, getCurrentProjectName, getProjects, addProjectItem, deleteProjectItem} from './projects';
 import {makeProjectItem, toggleComplete, togglePriority, changeDetail, changeName, changeDueDate} from './projectitem.js';
-import {displayDailyProjects, addDaily, deleteDaily, findDailyTask} from './dailyprojects'; 
+import {displayDailyProjects, addDaily, deleteDaily, findDailyTask, addDailyFromStorage} from './dailyprojects'; 
 import {makeDailyItem, toggleDailyComplete, toggleDailyPriority, changeDailyDetail, changeDailyName} from './dailyitem';
+import {testStorage, populateDailyStorage, checkForDailyStorage , clearStorage, checkForProjectsStorage} from './storage';
+
+checkStorage();
+function checkStorage ()
+{
+
+        if (checkForDailyStorage() == true)
+        {
+            addDailyFromStorage();
+        }
+        else 
+        {
+        console.log("didnt try to pull storage");
+        }
+
+
+        if (checkForProjectsStorage() == true)
+        {
+            addProjectsFromStorage();
+        }
+        else
+        {
+            console.log("didnt try to pull storage");
+        }
+
+}
+
+
 
 let projectsToDisplay = getProjectNames(); 
 const content = document.getElementById('content');
@@ -47,6 +75,18 @@ const navBarModule = (() => {
             addProject.textContent = "ADD";
             addProject.id = "add-project";
             projectOptions.appendChild(addProject);
+            
+            let testStorage = document.createElement('sl-button');
+            testStorage.setAttribute("type", "warning");
+            testStorage.textContent = "TEST";
+            testStorage.id = "remove-project";
+            testStorage.addEventListener("click", function()
+                {
+                    clearStorage();
+                });
+            projectOptions.appendChild(testStorage);
+    
+            
 
             let removeProject = document.createElement('sl-button');
             removeProject.setAttribute("type", "danger");
@@ -398,13 +438,14 @@ function populateNavBar ()
                             let newName = document.getElementById("taskName").value;
                             let newDetail = document.getElementById("taskDetails").value;
                             let newPriority = document.getElementById("priority").value;
+                            let newStatus = "NOPE"
                             if (newName == "" )
                             {
                                 alert('Please fill out the Name field!');
                             }
                             else // okay to make
                             {
-                            let newDailyTask = makeDailyItem (newName, newDetail, newPriority); 
+                            let newDailyTask = makeDailyItem (newName, newDetail, newPriority, newStatus); 
                             addDaily(newDailyTask);
                             unBlurBackground(); 
                             displayProject(); // refresh screen
