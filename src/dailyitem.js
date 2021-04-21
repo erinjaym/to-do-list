@@ -1,37 +1,37 @@
 let dailyItemMaker = (nameEntry, detailEntry, priorityEntry, status) => {
-    let dailyName = nameEntry;
-    let detail = detailEntry;
-    let priority = priorityEntry;
-    let completed = status;
+  let dailyName = nameEntry;
+  let detail = detailEntry;
+  let priority = priorityEntry;
+  let completed = status;
 
-    return {dailyName, detail, completed, priority};
+  return { dailyName, detail, completed, priority };
 };
 
-function toggleDailyComplete (dailyItem, status)
-{ 
-    dailyItem.completed = status;
+function toggleDailyComplete(dailyItem, status) {
+  dailyItem.completed = status;
 }
 
-function toggleDailyPriority (dailyItem, priorityEntry)
-{
-    dailyItem.priority = priorityEntry;
+function toggleDailyPriority(dailyItem, priorityEntry) {
+  dailyItem.priority = priorityEntry;
 }
 
-
-function changeDailyDetail (dailyItem, newDetails)
-{
-    dailyItem.detail = newDetails;
+function changeDailyDetail(dailyItem, newDetails) {
+  dailyItem.detail = newDetails;
 }
 
-function changeDailyName (dailyItem, newName)
-{
-     dailyItem.dailyName = newName;
-} 
-
-function makeDailyItem (name, detail, priority, status) 
-{
-let daily = dailyItemMaker(name, detail, priority, status);
-return daily;
+function changeDailyName(dailyItem, newName) {
+  dailyItem.dailyName = newName;
 }
 
-export {makeDailyItem, toggleDailyComplete, toggleDailyPriority, changeDailyDetail, changeDailyName};
+function makeDailyItem(name, detail, priority, status) {
+  let daily = dailyItemMaker(name, detail, priority, status);
+  return daily;
+}
+
+export {
+  makeDailyItem,
+  toggleDailyComplete,
+  toggleDailyPriority,
+  changeDailyDetail,
+  changeDailyName,
+};

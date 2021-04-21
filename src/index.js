@@ -1,7 +1,4 @@
-import {populateNavBar, displayProject} from './screencontent.js';
+import { populateNavBar, displayProject } from "./screencontent.js";
 
-populateNavBar(); // screen content 
-displayProject(); // screen content? 
-
-
-
+populateNavBar();
+displayProject();
